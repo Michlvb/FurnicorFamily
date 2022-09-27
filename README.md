@@ -1,1 +1,4 @@
-# FurnicorFamily
+# FurnicorFamilySystem
+
+
+In this assignment, we would like to make a simple system to store and manage the information of members of Furnicor retail outlet. Furnicor is a company that designs and sells ready-to-assemble furniture, kitchen appliances and home accessories, among other goods and home services. It currently has over 650,000 members worldwide. As Furnicor Family member, clients can enjoy many benefits, such as discounts on lots of products and free access to workshops and events, return their products indefinitely, get a free 14-day 'oops'-insurance, take a free cup of coffee or tea at the restaurant, etc. In order to enjoy all these exciting member benefits, a client must be a family member of Furnicor. They can be registered for free at a customer service desk. A membership management system is needed at the customer service to register new members.
