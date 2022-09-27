@@ -5,6 +5,8 @@ import re
 import random
 from unicodedata import digit
 
+from utils import ClearConsole
+
 username = "superadmin"
 password = "Admin321!"
 loggedIn = False
@@ -63,7 +65,7 @@ def main():
   # initialize id for logging purposes
   id = 0
 
-  system('cls')
+  ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
   
   choice = "0"
@@ -83,7 +85,6 @@ def main():
 
     # if else statement to check whether int input matches the available choices
     if(choice == "1"):
-      role = "2" # hard coded for testing purposes
       loggedIn = login(id)
       if (loggedIn[0] == True):
         id = loggedIn[1]
@@ -91,9 +92,6 @@ def main():
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
         id = indexId
-        # navigate to main menu from ui
-        # addMember(id)
-        modifyMember(id)
         ui.mainMenu(role, id)
     # exit program
     elif(choice == "2"):
@@ -112,6 +110,10 @@ def login(id):
     while loginAttempt < 3:
         usernameTry = input("Username: ")
         passwordTry = input("Password: ")
+        
+        # Get user from db
+
+
         # TODO: if else statement
         if usernameTry == username and passwordTry == password:
             loggedIn = True
@@ -122,6 +124,7 @@ def login(id):
             # log log in successful
             log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
             id = indexId
+            #TODO: Send back user credentials
             return loggedIn, id
         else:
             indexId = log.SystemCounter(id)
@@ -428,8 +431,6 @@ def modifyMember(id):
     
     if modifyChoice == "0":
       return
-                
-
 
 main()
 
