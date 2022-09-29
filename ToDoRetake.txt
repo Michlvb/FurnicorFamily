@@ -1,7 +1,7 @@
-- ffs.py --> cls: command not found on mac
-- ffs.py --> no role assigning --> get user from database
-- ffs.py --> regex check for username and password
-- ffs.py --> check if username and password matches user in the database
-- ffs.py --> Send back user upon successful login
-- ui.py --> printrole maybe changed from int to advisor/ system admin/ super admin
-- ffs.py --> modifymember not finished?
+- ffs.py --> K --> cls: command not found on mac
+- ffs.py -->  M --> no role assigning --> get user from database
+- ffs.py --> K --> regex check for username and password
+- ffs.py -->  M --> check if username and password matches user in the database
+- ffs.py --> M --> Send back user upon successful login
+- ui.py --> K --> printrole maybe changed from int to advisor/ system admin/ super admin
+- ffs.py -->  K --> modifymember not finished?
