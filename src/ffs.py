@@ -4,6 +4,7 @@ from Log import log
 import re
 import random
 from unicodedata import digit
+from utils import ClearConsole
 
 username = "superadmin"
 password = "Admin321!"
@@ -63,9 +64,9 @@ def main():
   # initialize id for logging purposes
   id = 0
 
-  system('cls')
+  ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
-  
+    
   choice = "0"
   # loop for menu choices login and exit
   while not (choice == "1" or choice == "2"):

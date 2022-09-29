@@ -2,6 +2,7 @@
 from os import system
 from Log import log
 from user import User, SysAdmin,SuperAdmin
+from utils import ClearConsole
 
 def menuPrint(printRole):
     # print advisor role
@@ -61,7 +62,7 @@ def choices(roleOptions):
 
 # check role and print appropiate menu
 def mainMenu(roleParam, id):
-    system('cls')
+    ClearConsole()
     menuPrint(roleParam)
     menuNav(roleParam, id)
     if(roleParam == "0"):
@@ -97,7 +98,7 @@ def menuNav(role, id):
             # log incorrect user input
             log.PrepareLog(indexId, "testname%i" % indexId, "Menu navigation incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
             id = indexId
-            system('cls')
+            ClearConsole()
             print("That is not an option. Please choose one of the following options:")
             menuPrint(role)
 
