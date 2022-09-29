@@ -1,4 +1,5 @@
 from os import system
+from re import U
 from Log import log
 from user import User, SysAdmin,SuperAdmin
 from utils import ClearConsole
@@ -107,11 +108,13 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        SysAdmin.AddUser(id)
+        u = User()
+        u.addMember(id)
 
     if (options == "2"):
         if (role == "3"):
-            # ResetAdminPassword()
+            su = SuperAdmin()
+            su.ResetPassword()
             indexId = log.SystemCounter(id)
             # log user choice
             log.PrepareLog(indexId, 'testname%i' % indexId, 'Option navigation option chosen', 'input: "%s" used as choice by Super Admin' % options, 'no')
@@ -121,10 +124,13 @@ def OptionNavigation(options, role, id):
             # log user choice
             log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
             id = indexId
-            User.updatePassword(id)
+            u = User()
+            u.updatePassword(id)
 
     if (options == "3"):
         # ModifyMember()
+        u = User()
+        u.modifyMember()
         indexId = log.SystemCounter(id)
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
@@ -135,14 +141,16 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        User.SearchMember(id)
+        u = User()
+        u.SearchMember(id)
 
     if (options == "5"):
         indexId = log.SystemCounter(id)
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        SysAdmin.PrintUsers(id)
+        su = SuperAdmin()
+        su.PrintUsers(id)
 
     if (options == "6"):
         # AddAdvisor()
@@ -150,6 +158,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.AddUser(id)
 
     if (options == "7"):
         # UpdateAdvisor()
@@ -157,20 +167,24 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.UpdateUser(id)
 
     if (options == "8"):
         indexId = log.SystemCounter(id)
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        SysAdmin.DeleteUser(id)
+        su = SuperAdmin()
+        su.DeleteUser()
 
     if (options == "9"):
         indexId = log.SystemCounter(id)
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        SysAdmin.ResetPassword(id)
+        su = SuperAdmin()
+        su.ResetPassword()
 
     if (options == "10"):
         # Backup()
@@ -178,6 +192,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.BackupDB()
 
     if (options == "11"):
         indexId = log.SystemCounter(id)
@@ -192,6 +208,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.DeleteMember()
 
     if (options == "13"):
         # AddAdmin()
@@ -199,6 +217,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.AddUser()
 
     if (options == "14"):
         # UpdateAdmin()
@@ -206,6 +226,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: %s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.UpdateUser()
 
     if (options == "15"):
         # DeleteAdmin()
@@ -213,6 +235,8 @@ def OptionNavigation(options, role, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
+        su = SuperAdmin()
+        su.DeleteUser()
 
     
 
