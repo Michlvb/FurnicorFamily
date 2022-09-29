@@ -1,9 +1,14 @@
+from typing import Tuple
+from Database.database import Database
 from UI import ui
 from os import system
 from Log import log
 import re
 import random
 from unicodedata import digit
+from Log.log import Decrypt, Encrypt
+
+from user import SuperAdmin
 
 username = "superadmin"
 password = "Admin321!"
@@ -63,7 +68,7 @@ def main():
   # initialize id for logging purposes
   id = 0
 
-  system('cls')
+#   system('cls')
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
   
   choice = "0"
@@ -82,9 +87,12 @@ def main():
       pass
 
     # if else statement to check whether int input matches the available choices
+    # kyljan1_2 - sgtriv9_0
+    # HelloWorld1~ - PmttwEwztl9~
     if(choice == "1"):
       role = "2" # hard coded for testing purposes
       loggedIn = login(id)
+      # get user with data
       if (loggedIn[0] == True):
         id = loggedIn[1]
         indexId = log.SystemCounter(id)
@@ -93,7 +101,9 @@ def main():
         id = indexId
         # navigate to main menu from ui
         # addMember(id)
-        modifyMember(id)
+        # modifyMember(id)
+        sa = SuperAdmin()
+        sa.PrintUsers(1)
         ui.mainMenu(role, id)
     # exit program
     elif(choice == "2"):
@@ -106,14 +116,26 @@ def main():
       log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
       id= indexId
 
+def decryptUser(data):
+    user = []
+    for val in data:
+        user.append(Decrypt(val))
+    return tuple(user)
+
 def login(id):
     loginAttempt = 0
     x = True
+    db = Database()
     while loginAttempt < 3:
-        usernameTry = input("Username: ")
-        passwordTry = input("Password: ")
-        # TODO: if else statement
-        if usernameTry == username and passwordTry == password:
+        usernameTry = Encrypt(input("Username: "))
+        passwordTry = Encrypt(input("Password: "))
+
+        # Get user
+        kweerieResult = db.getUser((usernameTry, passwordTry))
+ 
+        if (kweerieResult != None):
+            user = decryptUser(kweerieResult)
+
             loggedIn = True
             loginAttempt = 0
             print("Login succesful")
@@ -122,7 +144,7 @@ def login(id):
             # log log in successful
             log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
             id = indexId
-            return loggedIn, id
+            return user, id
         else:
             indexId = log.SystemCounter(id)
             # log unsuccessful login
