@@ -67,7 +67,6 @@ def regexPhone(phonenumber):
 def main():
   # initialize id for logging purposes
   id = 0
-
 #   system('cls')
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
   
@@ -91,19 +90,18 @@ def main():
     # HelloWorld1~ - PmttwEwztl9~
     if(choice == "1"):
       role = "2" # hard coded for testing purposes
-      loggedIn = login(id)
+      user, id = login(id)
       # get user with data
-      if (loggedIn[0] == True):
-        id = loggedIn[1]
+      if (user != None):
+
+        id = id
+        role = user[1]
+
         indexId = log.SystemCounter(id)
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
         id = indexId
         # navigate to main menu from ui
-        # addMember(id)
-        # modifyMember(id)
-        sa = SuperAdmin()
-        sa.PrintUsers(1)
         ui.mainMenu(role, id)
     # exit program
     elif(choice == "2"):
