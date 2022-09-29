@@ -23,6 +23,17 @@ class Database:
       self.conn = sqlite3.connect(pathToDb)
       self.cur = self.conn.cursor()
 
+  def getUser(self, data):
+    try:
+      sql = '''SELECT username, role, firstname, lastname FROM users WHERE username = ? AND password = ?'''
+      self.cur.execute(sql, (data))
+      user = self.cur.fetchone()
+    except sqlite3.Error as err:
+      # TODO: Add Logging
+      print(err)
+    return user
+    
+
   # Close connection
   def Close(self):
     self.conn.close()
