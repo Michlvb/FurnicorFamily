@@ -8,6 +8,7 @@ from utils import ClearConsole
 
 username = "superadmin"
 password = "Admin321!"
+role = "SuperAdmin"
 loggedIn = False
 member = ""
 members = ()
@@ -60,6 +61,41 @@ def regexPhone(phonenumber):
     phoneRe = re.search("(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})", phonenumber)
     return phoneRe
 
+def regexUsername():
+  while True:
+    username = input("Please enter your username: ")
+    try:
+      if bool(re.search(r"^[a-zA-Z]", username)):
+        if bool(re.fullmatch(r"[A-Za-z0-9_'\.]{6,10}", username)):
+          print("VALID")
+        else:
+          print("Invalid")
+          continue
+      else:
+        print("Must start with a letter")
+        continue
+    except ValueError as err:
+      print(err)
+      continue
+    else:
+      break
+  return username
+
+def regexPassword():
+  while True:
+    password = input("Please enter your password: ")
+    try:
+      if bool(re.fullmatch(r"[A-Za-z0-9~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]{8,30}", password)):
+        print("Valid")
+      else:
+        print("Invalid")
+        continue
+    except ValueError:
+      continue
+    else:
+      break
+  return password        
+
 def main():
   # initialize id for logging purposes
   id = 0
@@ -84,7 +120,7 @@ def main():
 
     # if else statement to check whether int input matches the available choices
     if(choice == "1"):
-      role = "2" # hard coded for testing purposes
+      role = "SuperAdmin" # hard coded for testing purposes
       loggedIn = login(id)
       if (loggedIn[0] == True):
         id = loggedIn[1]
@@ -111,8 +147,8 @@ def login(id):
     loginAttempt = 0
     x = True
     while loginAttempt < 3:
-        usernameTry = input("Username: ")
-        passwordTry = input("Password: ")
+        usernameTry = input("Username: ") # TODO: REGEX
+        passwordTry = input("Password: ") # TODO: REGEX
         # TODO: if else statement
         if usernameTry == username and passwordTry == password:
             loggedIn = True
@@ -132,6 +168,8 @@ def login(id):
 
             loginAttempt+=1
             print("Invalid login")
+
+    
 
     indexId = log.SystemCounter(id)
     # log multiple incorrect logins

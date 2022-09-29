@@ -1,4 +1,3 @@
-# TODO: Create ui
 from os import system
 from Log import log
 from user import User, SysAdmin,SuperAdmin
@@ -6,7 +5,7 @@ from utils import ClearConsole
 
 def menuPrint(printRole):
     # print advisor role
-    if (printRole ==  "1"):
+    if (printRole ==  "Advisor"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Update password")
@@ -15,7 +14,7 @@ def menuPrint(printRole):
         print("[0]: Exit the system")
 
     # print system admin role
-    if (printRole ==  "2"):
+    if (printRole ==  "SystemAdmin"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Update password")
@@ -32,7 +31,7 @@ def menuPrint(printRole):
         print("[0]: Exit the system")
 
     # print super admin role
-    if (printRole ==  "3"):
+    if (printRole ==  "SuperAdmin"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Reset admin password")
@@ -53,11 +52,11 @@ def menuPrint(printRole):
 
 # check which role to print to the console
 def choices(roleOptions):
-    if(roleOptions == "1"):
+    if(roleOptions == "Advisor"):
         return ["1", "2", "3", "4", "0"]
-    elif (roleOptions == "2"):
+    elif (roleOptions == "SystemAdmin"):
         return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "0"]
-    elif (roleOptions == "3"):
+    elif (roleOptions == "SuperAdmin"):
         return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "0"]
 
 # check role and print appropiate menu
