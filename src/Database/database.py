@@ -12,7 +12,7 @@ from messages import unauthorized
 
 class Database:
   def __init__(self):
-    pathToDb = os.path.join("Database", "highlyClassified.db")
+    pathToDb = os.path.abspath(os.path.join("Database", "highlyClassified.db"))
     if (not exists(pathToDb)):
       self.conn = sqlite3.connect(pathToDb)
       self.cur = self.conn.cursor()
