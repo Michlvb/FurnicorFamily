@@ -1,3 +1,5 @@
+from typing import Tuple
+from Database.database import Database
 from UI import ui
 from os import system
 from Log import log
@@ -5,6 +7,8 @@ import re
 import random
 from unicodedata import digit
 from utils import ClearConsole
+from Log.log import Decrypt, Encrypt
+
 from user import SuperAdmin
 
 username = "superadmin"
@@ -37,19 +41,22 @@ def main():
       pass
 
     # if else statement to check whether int input matches the available choices
+    # kyljan1_2 - sgtriv9_0
+    # HelloWorld1~ - PmttwEwztl9~
     if(choice == "1"):
       role = "SuperAdmin" # hard coded for testing purposes
-      loggedIn = login(id)
-      if (loggedIn[0] == True):
-        id = loggedIn[1]
+      user, id = login(id)
+      # get user with data
+      if (user != None):
+
+        id = id
+        role = user[1]
+
         indexId = log.SystemCounter(id)
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
         id = indexId
         # navigate to main menu from ui
-        # addMember(id)
-        user = SuperAdmin()
-        user.modifyMember(id)
         ui.mainMenu(role, id)
     # exit program
     elif(choice == "2"):
@@ -62,14 +69,26 @@ def main():
       log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
       id= indexId
 
+def decryptUser(data):
+    user = []
+    for val in data:
+        user.append(Decrypt(val))
+    return tuple(user)
+
 def login(id):
     loginAttempt = 0
     x = True
+    db = Database()
     while loginAttempt < 3:
-        usernameTry = input("Username: ") # TODO: REGEX
-        passwordTry = input("Password: ") # TODO: REGEX
-        # TODO: if else statement
-        if usernameTry == username and passwordTry == password:
+        usernameTry = Encrypt(input("Username: "))
+        passwordTry = Encrypt(input("Password: "))
+
+        # Get user
+        kweerieResult = db.getUser((usernameTry, passwordTry))
+ 
+        if (kweerieResult != None):
+            user = decryptUser(kweerieResult)
+
             loggedIn = True
             loginAttempt = 0
             print("Login succesful")
@@ -78,7 +97,7 @@ def login(id):
             # log log in successful
             log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
             id = indexId
-            return loggedIn, id
+            return user, id
         else:
             indexId = log.SystemCounter(id)
             # log unsuccessful login

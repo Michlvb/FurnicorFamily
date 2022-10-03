@@ -12,8 +12,7 @@ from messages import unauthorized
 
 class Database:
   def __init__(self):
-    pathToDb = os.path.join("Database", "highlyClassified.db")
-    print(pathToDb)
+    pathToDb = os.path.abspath(os.path.join("Database", "highlyClassified.db"))
     if (not exists(pathToDb)):
       self.conn = sqlite3.connect(pathToDb)
       self.cur = self.conn.cursor()
@@ -23,6 +22,17 @@ class Database:
     else:
       self.conn = sqlite3.connect(pathToDb)
       self.cur = self.conn.cursor()
+
+  def getUser(self, data):
+    try:
+      sql = '''SELECT username, role, firstname, lastname FROM users WHERE username = ? AND password = ?'''
+      self.cur.execute(sql, (data))
+      user = self.cur.fetchone()
+    except sqlite3.Error as err:
+      # TODO: Add Logging
+      print(err)
+    return user
+    
 
   # Close connection
   def Close(self):
