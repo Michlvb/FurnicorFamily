@@ -11,6 +11,8 @@ from Log.log import Decrypt, Encrypt
 
 from user import SuperAdmin
 
+from utils import ClearConsole
+
 username = "superadmin"
 password = "Admin321!"
 role = "SuperAdmin"
@@ -44,19 +46,13 @@ def main():
     # kyljan1_2 - sgtriv9_0
     # HelloWorld1~ - PmttwEwztl9~
     if(choice == "1"):
-      role = "SuperAdmin" # hard coded for testing purposes
-      user, id = login(id)
-      # get user with data
-      if (user != None):
-
-        id = id
-        role = user[1]
-
+      loggedIn = login(id)
+      if (loggedIn[0] == True):
+        id = loggedIn[1]
         indexId = log.SystemCounter(id)
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
         id = indexId
-        # navigate to main menu from ui
         ui.mainMenu(role, id)
     # exit program
     elif(choice == "2"):
@@ -97,6 +93,7 @@ def login(id):
             # log log in successful
             log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
             id = indexId
+
             return user, id
         else:
             indexId = log.SystemCounter(id)
@@ -119,4 +116,3 @@ def login(id):
     return loggedIn, id      
 
 main()
-
