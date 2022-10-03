@@ -46,8 +46,8 @@ def main():
     # kyljan1_2 - sgtriv9_0
     # HelloWorld1~ - PmttwEwztl9~
     if(choice == "1"):
-      loggedIn = login(id)
-      if (loggedIn[0] == True):
+      user, id = login(id)
+      if (user != None):
         id = loggedIn[1]
         indexId = log.SystemCounter(id)
         # log menu choice
@@ -85,7 +85,6 @@ def login(id):
         if (kweerieResult != None):
             user = decryptUser(kweerieResult)
 
-            loggedIn = True
             loginAttempt = 0
             print("Login succesful")
 
@@ -103,9 +102,7 @@ def login(id):
 
             loginAttempt+=1
             print("Invalid login")
-
-    
-
+            
     indexId = log.SystemCounter(id)
     # log multiple incorrect logins
     log.PrepareLog(indexId, "testname", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
