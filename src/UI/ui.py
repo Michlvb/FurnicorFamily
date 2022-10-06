@@ -6,7 +6,7 @@ from utils import ClearConsole
 
 def menuPrint(printRole):
     # print advisor role
-    if (printRole ==  "Advisor"):
+    if (printRole ==  "advisor"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Update password")
@@ -15,7 +15,7 @@ def menuPrint(printRole):
         print("[0]: Exit the system")
 
     # print system admin role
-    if (printRole ==  "SystemAdmin"):
+    if (printRole ==  "systemadmin"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Update password")
@@ -32,7 +32,7 @@ def menuPrint(printRole):
         print("[0]: Exit the system")
 
     # print super admin role
-    if (printRole ==  "SuperAdmin"):
+    if (printRole ==  "superadmin"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
         print("[2]: Reset admin password")
@@ -53,11 +53,11 @@ def menuPrint(printRole):
 
 # check which role to print to the console
 def choices(roleOptions):
-    if(roleOptions == "Advisor"):
+    if(roleOptions == "advisor"):
         return ["1", "2", "3", "4", "0"]
-    elif (roleOptions == "SystemAdmin"):
+    elif (roleOptions == "systemadmin"):
         return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "0"]
-    elif (roleOptions == "SuperAdmin"):
+    elif (roleOptions == "superadmin"):
         return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "0"]
 
 # check role and print appropiate menu

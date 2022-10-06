@@ -15,7 +15,7 @@ from utils import ClearConsole
 
 username = "superadmin"
 password = "Admin321!"
-role = "SuperAdmin"
+role = "superadmin"
 loggedIn = False
 member = ""
 members = ()        
