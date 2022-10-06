@@ -12,15 +12,14 @@ from messages import unauthorized
 
 class Database:
   def __init__(self):
-    pathToDb = os.path.abspath(os.path.join("Database", "highlyClassified.db"))
-    if (not exists(pathToDb)):
-      self.conn = sqlite3.connect(pathToDb)
+    if (not exists("highlyClassified.db")):
+      self.conn = sqlite3.connect("highlyClassified.db")
       self.cur = self.conn.cursor()
       self.cur.execute("CREATE TABLE members (Id number, Firstname text, Lastname text, Address text, Email text, MobileNumber number, RegisteredOn text)")
       self.cur.execute("CREATE TABLE users (username text, password text, role text, firstname text, lastname text, registeredOn text)")
       self.conn.commit()
     else:
-      self.conn = sqlite3.connect(pathToDb)
+      self.conn = sqlite3.connect("highlyClassified.db")
       self.cur = self.conn.cursor()
 
   def getUser(self, data):
