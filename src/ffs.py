@@ -13,8 +13,8 @@ from user import SuperAdmin
 
 from utils import ClearConsole
 
-username = "superadmin"
-password = "Admin321!"
+superadmin = "superadmin"
+superadminpassword = "Admin321!"
 role = "superadmin"
 loggedIn = False
 member = ""
@@ -48,7 +48,7 @@ def main():
     if(choice == "1"):
       user, id = login(id)
       if (user != None):
-        id = loggedIn[1]
+        id = id
         indexId = log.SystemCounter(id)
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
@@ -76,11 +76,17 @@ def login(id):
     x = True
     db = Database()
     while loginAttempt < 3:
-        usernameTry = Encrypt(input("Username: "))
-        passwordTry = Encrypt(input("Password: "))
+        usernameTry = input("Username: ")
+        passwordTry = input("Password: ")
 
-        # Get user
-        kweerieResult = db.getUser((usernameTry, passwordTry))
+        if (usernameTry == superadmin and passwordTry == superadminpassword):
+          indexId = log.SystemCounter(id)
+            # log log in successful
+          log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
+          return superadmin, id
+        else:
+          # Get user
+          kweerieResult = db.getUser((Encrypt(usernameTry), Encrypt(passwordTry)))
  
         if (kweerieResult != None):
             user = decryptUser(kweerieResult)
