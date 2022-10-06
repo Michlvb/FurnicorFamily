@@ -425,9 +425,9 @@ class SysAdmin(User):
     if self.role == "sysadmin":
       role         = verifyInput("(advisor)", "Please enter the role of the user: ")
     else:
-      role         = verifyInput("(sysadmin|advisor)", "Please enter the role of the user: ")
+      role       = verifyInput("(sysadmin|advisor|Advisor|Sysadmin)", "Please enter the role of the user: ")
     firstname    = verifyInput("^[-a-zA-Z,']+$", "Please enter your firstname: ")
-    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter youir lastname: ")
+    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ")
     registration = datetime.today().strftime('%d-%m-%Y')
 
     # TODO: add encryption - DONE
@@ -499,7 +499,7 @@ class SysAdmin(User):
         newValue     = verifyInput("(sysadmin|advisor)", "Please enter the role of the user: ") 
     elif option == 'lastname':
       sql = '''UPDATE users SET lastname = ?'''
-      newValue = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter youir lastname: ")
+      newValue = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ")
 
     try:
       self.dbConn.cur.execute(sql, (newValue, ))

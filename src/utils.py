@@ -16,7 +16,7 @@ def CreatePassword():
     password = input("Please enter your new password: ")
     try:
       if bool(re.fullmatch(r"[A-Za-z0-9~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]{8,30}", password)):
-        print(validPassword)
+        break
       else:
         print(invalidPassword)
         continue
