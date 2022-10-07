@@ -345,7 +345,6 @@ class User:
       id = indexId
 
       print(unauthorized)
-      sleep(100)
   
   def SearchMember(self, id):
     ClearConsole()
