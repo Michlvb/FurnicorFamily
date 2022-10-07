@@ -11,9 +11,8 @@ from Log import log
 import regex
 
 class User:
-  def __init__(self, username="", password="", role="advisor"):
-    self.username = username #Add validate username check
-    self.password = password #Add password validate check
+  def __init__(self, username="", role="advisor"):
+    self.username = username
     self.role     = role
     self.dbConn   = Database()
 
@@ -378,8 +377,8 @@ class User:
     id = indexId
 
 class SysAdmin(User):
-  def __init__(self, username="", password="", role=""):
-    super().__init__(username, password, role)
+  def __init__(self, username="", role=""):
+    super().__init__(username, role)
   
   def PrintUsers(self, id):
     ClearConsole()
@@ -408,8 +407,9 @@ class SysAdmin(User):
     # Create user profile
     while True:
       username     = CreateUsername()
-      username     = Encrypt(username)
+      username     = Encrypt(username.lower())
       if (self.CheckUnique(username) == 1):
+        #Mayb add prepare log here?
         break
       else:
 
@@ -432,7 +432,7 @@ class SysAdmin(User):
 
     # TODO: add encryption - DONE
     password     = Encrypt(password)
-    role         = Encrypt(role)
+    role         = Encrypt(role.lower())
     firstname    = Encrypt(firstname)
     lastname     = Encrypt(lastname)
     registration = Encrypt(registration)
@@ -618,7 +618,12 @@ class SysAdmin(User):
     # Send data to log function
     print(f'Copied {total-remaining} of {total} pages...')
 
-  def BackupDB(self):
+  def BackupDB(self, id):
+    # Log
+    indexId = log.SystemCounter(id)
+    log.PrepareLog(indexId, "{self.username}", "Backup of system made", "User {self.username} made a backup of the system", "no")
+    id = indexId
+
     backupName = "highlyClassified.db"
 
     # Create backup
@@ -634,7 +639,11 @@ class SysAdmin(User):
     if (exists("Backup.zip") and exists(backupName)):
       os.remove(backupName)
 
-  def RestoreBackup(self):
+  def RestoreBackup(self, id):
+    # Log
+    indexId = log.SystemCounter(id)
+    log.PrepareLog(indexId, "{self.username}", "Backup restored", "User {self.username} restored the system", "no")
+    id = indexId
     # Restore files (it overrides the current files)
     backupName = "highlyClassified.db"
     if (not exists("Backup.zip")):
@@ -700,7 +709,7 @@ class SysAdmin(User):
 
 class SuperAdmin(SysAdmin):
   def __init__(self):
-    super().__init__(username="superadmin", password="Admin321!", role="superadmin")
+    super().__init__(username="superadmin", role="superadmin")
 
 
 

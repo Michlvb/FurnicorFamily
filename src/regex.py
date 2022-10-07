@@ -54,9 +54,8 @@ def regexUsername():
     try:
       if bool(re.search(r"^[a-zA-Z]", username)):
         if bool(re.fullmatch(r"[A-Za-z0-9_'\.]{6,10}", username)):
-          print("VALID")
+          pass
         else:
-          print("Invalid")
           continue
       else:
         print("Must start with a letter")
@@ -73,9 +72,8 @@ def regexPassword():
     password = input("Please enter your password: ")
     try:
       if bool(re.fullmatch(r"[A-Za-z0-9~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]{8,30}", password)):
-        print("Valid")
+        pass
       else:
-        print("Invalid")
         continue
     except ValueError:
       continue

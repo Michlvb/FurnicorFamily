@@ -9,7 +9,7 @@ from unicodedata import digit
 from utils import ClearConsole
 from Log.log import Decrypt, Encrypt
 
-from user import SuperAdmin
+from user import SuperAdmin, SysAdmin, User
 
 from utils import ClearConsole
 
@@ -44,7 +44,7 @@ def main():
 
     # if else statement to check whether int input matches the available choices
     # kyljan1_2 - sgtriv9_0
-    # HelloWorld1~ - PmttwEwztl9~
+    # Spleetoog1! - PmttwEwztl9~
     if(choice == "1"):
       user, id = login(id)
       if (user != None):
@@ -53,7 +53,7 @@ def main():
         # log menu choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
         id = indexId
-        ui.mainMenu(role, id)
+        ui.mainMenu(user, id)
     # exit program
     elif(choice == "2"):
       exit()
@@ -66,10 +66,15 @@ def main():
       id= indexId
 
 def decryptUser(data):
+    decryptedData = []
     user = []
     for val in data:
-        user.append(Decrypt(val))
-    return tuple(user)
+        decryptedData.append(Decrypt(val))
+    if (decryptedData[1] == "sysadmin"):
+      user = SysAdmin(decryptedData[0], decryptedData[1])
+    elif (decryptedData[1] == "advisor"):
+      user = User(decryptedData[0], decryptedData[1])
+    return user
 
 def login(id):
     loginAttempt = 0
@@ -83,16 +88,17 @@ def login(id):
           indexId = log.SystemCounter(id)
             # log log in successful
           log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
+          id = indexId
           return superadmin, id
         else:
           # Get user
           kweerieResult = db.getUser((Encrypt(usernameTry), Encrypt(passwordTry)))
- 
+
         if (kweerieResult != None):
             user = decryptUser(kweerieResult)
 
             loginAttempt = 0
-            print("Login succesful")
+            print(user)
 
             indexId = log.SystemCounter(id)
             # log log in successful

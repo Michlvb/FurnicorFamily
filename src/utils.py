@@ -34,9 +34,8 @@ def CreateUsername():
     try:
       if bool(re.search(r"^[a-zA-Z]", username)):
         if bool(re.fullmatch(r"[A-Za-z0-9_'\.]{6,10}", username)):
-          print("VALID")
+          pass
         else:
-          print("Invalid")
           continue
       else:
         print("Must start with a letter")
@@ -53,7 +52,7 @@ def verifyInput(pattern, msg):
     value = input(msg)
     try:
       if bool(re.fullmatch(pattern, value)):
-        print("Valid")
+        pass
       else:
         continue
     except ValueError as err:
