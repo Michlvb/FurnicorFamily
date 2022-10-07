@@ -2,6 +2,7 @@ import os
 from os.path import exists
 from datetime import datetime
 import sqlite3
+from time import sleep
 from Database.database import Database
 from messages import unauthorized, genericError, zipNotFound, searchMsg
 from utils import ClearConsole, CreatePassword, CreateUsername, verifyInput, SearchParams, ValidateOptionValue, chooseCity, getValue
@@ -310,8 +311,18 @@ class User:
       password = Encrypt(CreatePassword())
       try:
         # Check what happens when password not equal
+        self.dbConn.cur.execute('SELECT password FROM users WHERE username = ? AND role = ?', (Encrypt(self.username), Encrypt(self.role)))
+        oldPassword = self.dbConn.cur.fetchone()
+
+        if oldPassword is None:
+          indexId = log.SystemCounter(id)
+          # log password updated
+          log.PrepareLog(indexId, "{self.username}", "User not found", "", "no")
+          id = indexId
+          return
+        
         sql = '''UPDATE users SET password = ? WHERE username = ? AND password = ?'''
-        self.dbConn.cur.execute(sql, (password, Encrypt(self.username), Encrypt(self.password)))
+        self.dbConn.cur.execute(sql, (password, Encrypt(self.username), Encrypt(oldPassword[0])))
         self.dbConn.conn.commit()
         self.password = password
 
@@ -319,7 +330,6 @@ class User:
         # log password updated
         log.PrepareLog(indexId, "{self.username}", "User: {self.username}'s password updated", "", "no")
         id = indexId
-
       except sqlite3.Error as err:
 
         indexId = log.SystemCounter(id)
@@ -335,6 +345,7 @@ class User:
       id = indexId
 
       print(unauthorized)
+      sleep(100)
   
   def SearchMember(self, id):
     ClearConsole()
@@ -568,13 +579,13 @@ class SysAdmin(User):
   def ResetPassword(self, id):
     tempPassword = "test123!"
 
-    # Get username
+    # # Get username
     username = Encrypt(CreateUsername())
 
     # Get role
-    role = Encrypt(verifyInput("(sysadmin|advisor)", "Please enter the role of the user: "))
+    role = verifyInput("(sysadmin|advisor|Sysadmin|Advisor)", "Please enter the role of the user: ").lower()
 
-    if self.role == "sysadmin" and role != "advisor":
+    if self.role == "sysadmin" and role != 'advisor':
       indexId = log.SystemCounter(id)
       # log incorrect password reset
       log.PrepareLog(indexId, "{self.username}", "Reset password error", "User tried to reset password of {username}", "yes")
@@ -585,28 +596,22 @@ class SysAdmin(User):
     else:
       try:
         sql = '''UPDATE USERS SET password = ? WHERE username = ? AND role = ?'''
-        self.dbConn.cur.execute(sql, (tempPassword, username, role))
+        self.dbConn.cur.execute(sql, (tempPassword, username, Encrypt(role)))
         self.dbConn.conn.commit()
       except sqlite3.Error as err:
         indexId = log.SystemCounter(id)
         # log invalid input
-        log.PrepareLog(indexId, "{self.username}", "Reset password invalid input", "/", "yes")
+        log.PrepareLog(indexId, "{self.username}", f"{err}", "/", "yes")
         id = indexId
-
-        print(err)
       
       # Check if executed.
       if self.dbConn.cur.rowcount > 0:
-        print("Pass changed\n")
-
         indexId = log.SystemCounter(id)
         # log password changed
         log.PrepareLog(indexId, "{self.username}", "Password changed", "User: {username}'s password was changed", "no")
         id = indexId
 
       else:
-        print("No rows affected\n")
-
         indexId = log.SystemCounter(id)
         # log no password reset
         log.PrepareLog(indexId, "{self.username}", "Password reset failed", "Password of user {username} was not changed", "no")
@@ -624,11 +629,11 @@ class SysAdmin(User):
     log.PrepareLog(indexId, "{self.username}", "Backup of system made", "User {self.username} made a backup of the system", "no")
     id = indexId
 
-    backupName = "highlyClassified.db"
+    backupName = "BackUp.db"
 
     # Create backup
     with sqlite3.connect(backupName) as bck:
-      self.dbConn.conn.backup(bck, pages=1, progress=self.LogBackup)
+      self.dbConn.conn.backup(bck, pages=-1, progress=self.LogBackup)
     
     # Create zip
     with ZipFile("Backup.zip", 'w') as zip:

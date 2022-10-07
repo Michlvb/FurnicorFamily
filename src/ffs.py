@@ -87,9 +87,10 @@ def login(id):
         if (usernameTry == superadmin and passwordTry == superadminpassword):
           indexId = log.SystemCounter(id)
             # log log in successful
-          log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
+          log.PrepareLog(indexId, "Super admin", "Logged in", "/", "no")
           id = indexId
-          return superadmin, id
+          user = SuperAdmin()
+          return user, id
         else:
           # Get user
           kweerieResult = db.getUser((Encrypt(usernameTry), Encrypt(passwordTry)))
@@ -102,7 +103,7 @@ def login(id):
 
             indexId = log.SystemCounter(id)
             # log log in successful
-            log.PrepareLog(indexId, "testname", "Logged in", "/", "no")
+            log.PrepareLog(indexId, "user", "Logged in", "/", "no")
             id = indexId
 
             return user, id

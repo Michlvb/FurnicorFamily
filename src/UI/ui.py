@@ -1,5 +1,6 @@
 from os import system
 from re import U
+from time import sleep
 from Log import log
 from user import User, SysAdmin,SuperAdmin
 from utils import ClearConsole
@@ -83,6 +84,7 @@ def menuNav(user, id):
             choiceMenu = user_input
         except:
             pass
+        
         # navigate to chosen option
         if (choiceMenu in options):
             indexId = log.SystemCounter(id)
