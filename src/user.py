@@ -17,7 +17,7 @@ class User:
     self.role     = role
     self.dbConn   = Database()
 
-  def addMember(id):
+  def addMember(self, id):
       while True:    
           firstName = input("What is your first name: ")
           outcomeRe = regex.regexName(firstName)

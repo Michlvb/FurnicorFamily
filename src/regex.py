@@ -1,3 +1,5 @@
+import re
+
 def idGenerate():
     x = True
     checkSum = 0
