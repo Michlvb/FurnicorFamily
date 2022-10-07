@@ -25,7 +25,7 @@ def menuPrint(user):
         print("[6]: Add new advisor")
         print("[7]: Update advisor")
         print("[8]: Delete advisor")
-        print("[9]: Reset advisor password")
+        print("[9] Reset password")
         print("[10]: Make backup")
         print("[11]: Restore backup")
         print("[12]: System logs")
@@ -36,14 +36,14 @@ def menuPrint(user):
     if (user.role ==  "superadmin"):
         print("Please choose one of the following options:\n(Enter the corresponding number)\n")
         print("[1]: Register new member")
-        print("[2]: Reset admin password")
+        print("[2]: Update password")
         print("[3]: Modify/update member")
         print("[4]: Search for a member")
         print("[5]: Check users")
         print("[6]: Add new advisor")
         print("[7]: Update advisor")
         print("[8]: Delete advisor")
-        print("[9]: Reset advisor password")
+        print("[9] Reset password")
         print("[10]: Make backup")
         print("[11]: Restore backup")
         print("[12]: System logs")
@@ -113,18 +113,11 @@ def OptionNavigation(options, user, id):
         user.addMember(id)
 
     if (options == "2"):
-        if (user.role == "superadmin"):
-            indexId = log.SystemCounter(id)
-            # log user choice
-            log.PrepareLog(indexId, 'testname%i' % indexId, 'Option navigation option chosen', 'input: "%s" used as choice by Super Admin' % options, 'no')
-            id = indexId
-            user.ResetPassword(id)
-        else:
-            indexId = log.SystemCounter(id)
-            # log user choice
-            log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
-            id = indexId
-            user.updatePassword(id)
+        indexId = log.SystemCounter(id)
+        # log user choice
+        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        id = indexId
+        user.updatePassword(id)
 
     if (options == "3"):
         # ModifyMember()
@@ -188,7 +181,7 @@ def OptionNavigation(options, user, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        user.Reset(id)
+        user.RestoreBackup(id)
     
     if (options == "12"):
         indexId = log.SystemCounter(id)

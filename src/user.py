@@ -355,7 +355,6 @@ class User:
         # Setting Encryption
         memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
 
-    # This should be illegal
     data = tuple(memberInfo.values())
 
     sql = """
