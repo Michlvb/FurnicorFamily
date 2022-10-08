@@ -10,6 +10,7 @@ from zipfile import ZipFile
 from Log.log import Encrypt, Decrypt
 from Log import log
 import regex
+from regex import idGenerate
 
 class User:
   def __init__(self, username="", role="advisor"):
@@ -19,106 +20,125 @@ class User:
 
   def addMember(self, id):
       while True:    
-          firstName = input("What is your first name: ")
-          outcomeRe = regex.regexName(firstName)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input first name", "Invalid input: %s recorded as user input" % firstName, "no")
-              id = indexId
-              print("Invalid input")
-          else:
-              break
+        firstName = input("What is your first name: ")
+        outcomeRe = regex.regexName(firstName)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input first name", "Invalid input: %s recorded as user input" % firstName, "no")
+            id = indexId
+            print("Invalid input")
+        else:
+            break
 
       while True:    
-          lastName = input("What is your last name: ")
-          outcomeRe = regex.regexName(lastName)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
-              id = indexId
-              print("Invalid input")
-          elif len(lastName) == 1:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
-              id = indexId
-              print("Invalid input")
-          else:
-              break
+        lastName = input("What is your last name: ")
+        outcomeRe = regex.regexName(lastName)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
+            id = indexId
+            print("Invalid input")
+        elif len(lastName) == 1:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
+            id = indexId
+            print("Invalid input")
+        else:
+            break
 
       while True:     
-          streetName = input("What is your streetname: ")
-          outcomeRe = regex.regexStreet(streetName)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
-              id = indexId
-              print("Invalid input")
-          elif len(streetName) <= 3:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
-              id = indexId
-              print("Invalid Input")
-          else:
-              break
+        streetName = input("What is your streetname: ")
+        outcomeRe = regex.regexStreet(streetName)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
+            id = indexId
+            print("Invalid input")
+        elif len(streetName) <= 3:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
+            id = indexId
+            print("Invalid Input")
+        else:
+            break
 
       while True:
-          houseNumber = input("What is your house number: ")
-          outcomeRe = regex.regexNumber(houseNumber)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input house number", "Invalid input: %s recorded as user input" % houseNumber, "no")
-              id = indexId
-              print("Invalid Input")
-          else:
-              break
+        houseNumber = input("What is your house number: ")
+        outcomeRe = regex.regexNumber(houseNumber)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input house number", "Invalid input: %s recorded as user input" % houseNumber, "no")
+            id = indexId
+            print("Invalid Input")
+        else:
+            break
 
       while True:
-          zipcode = input("What is your zipcode (XXXX YY): ")
-          outcomeRe = regex.regexZipcode(zipcode)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input zip code", "Invalid input: %s recorded as user input" % zipcode, "no")
-              id = indexId
-              print("Invalid input")
-          else:
-              #add city
-              address = f"{streetName} {houseNumber} {zipcode}"
-              print(address)
-              break
+        zipcode = input("What is your zipcode (XXXX YY): ")
+        outcomeRe = regex.regexZipcode(zipcode)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input zip code", "Invalid input: %s recorded as user input" % zipcode, "no")
+            id = indexId
+            print("Invalid input")
+        else:
+            break
+        
+      # Another input field to ask the user from which city they are.(at least they can choose from 10 different cities)
+      city = chooseCity()
+      address = f"{streetName} {houseNumber} {zipcode} {city}"
+      print(address)
 
       while True:
-          emailAddress = input("What is your email address: ")
-          outcomeRe = regex.regexEmail(emailAddress)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input email", "Invalid input: %s recorded as user input" % emailAddress, "no")
-              id = indexId
-              print("Invalid input")
-          else:
-              break
+        emailAddress = input("What is your email address: ")
+        outcomeRe = regex.regexEmail(emailAddress)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input email", "Invalid input: %s recorded as user input" % emailAddress, "no")
+            id = indexId
+            print("Invalid input")
+        else:
+            break
       
+      #TODO: Check add mobile number
       while True:    
-          mobilePhone = input("What is your phonenumber: ")
-          outcomeRe = regex.regexPhone(mobilePhone)
-          if not outcomeRe:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % mobilePhone, "no")
-              id = indexId
-              print("Invalid input")
-          else:
-              break
+        mobilePhone = input("Enter your phone number (+31-6-DDDDDDDD): ")
+        outcomeRe = regex.regexPhone(mobilePhone)
+        if not outcomeRe:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % mobilePhone, "no")
+            id = indexId
+            print("Invalid input")
+        else:
+            break
 
-      members =  (firstName, lastName, address, emailAddress, mobilePhone)
-      return members
+      #Created ID and registration
+      uniqueId = idGenerate()
+      registration = datetime.today().strftime('%d-%m-%Y')
+
+      sql = """INSERT INTO members VALUES (?, ?, ?, ?, ?, ?, ?)"""
+      try:
+        self.dbConn.cur.execute(sql, (uniqueId, firstName, lastName, address, emailAddress, mobilePhone, registration))
+        self.dbConn.conn.commit()
+
+        indexId = log.SystemCounter(id)
+        # log member add. KYLIAN WHY IS THIS "YES"?
+        log.PrepareLog(indexId, "{self.username}", "Member added to database", "/", "yes")
+        id = indexId
+      except sqlite3.Error as err:
+        indexId = log.SystemCounter(id)
+        # log database error
+        log.PrepareLog(indexId, "{self.username}", "Add user database error", "/", "yes")
+        id = indexId
 
   def modifyMember(id):
       checkSum = 0;
@@ -367,17 +387,22 @@ class User:
     # This should be illegal
     data = tuple(memberInfo.values())
 
+    # sql = """
+    #   SELECT * FROM members
+    #   WHERE (Id LIKE '%' || ? || '%')
+    #     AND (firstname LIKE '%' || ? || '%')
+    #     AND (lastname LIKE '%' || ? || '%')
+    #     AND (address LIKE '%' || ? || '%')
+    #     AND (email LIKE '%' || ? || '%')
+    #     AND (mobilenumber LIKE '%' || ? || '%')
+    #   """
     sql = """
       SELECT * FROM members
-      WHERE (Id LIKE '%' || ? || '%')
-        AND (firstname LIKE '%' || ? || '%')
-        AND (lastname LIKE '%' || ? || '%')
-        AND (address LIKE '%' || ? || '%')
-        AND (email LIKE '%' || ? || '%')
-        AND (mobilenumber LIKE '%' || ? || '%')
-      """
+    """
     # Execute sql and loop over the result
-    for res in self.dbConn.cur.execute(sql, data):
+    # for res in self.dbConn.cur.execute(sql, data):
+    #   print(res)
+    for res in self.dbConn.cur.execute(sql):
       print(res)
 
     indexId = log.SystemCounter(id)
@@ -385,8 +410,18 @@ class User:
     log.PrepareLog(indexId, "{self.username}", "Members searched", "/", "no")
     id = indexId
 
+    while True:  
+      user_response = input("Press x to return to main menu: ")
+      # try except to check if user input is int
+      try:
+          if (user_response == 'x'):
+            break
+      except:
+          pass 
+    
+
 class SysAdmin(User):
-  def __init__(self, username="", role=""):
+  def __init__(self, username, role):
     super().__init__(username, role)
   
   def PrintUsers(self, id):
@@ -410,13 +445,13 @@ class SysAdmin(User):
       print(err)
   
     while True:  
-        user_response = input("Press x to return to main menu: ")
-        # try except to check if user input is int
-        try:
-            if (user_response == 'x'):
-                break
-        except:
-            pass  
+      user_response = input("Press x to return to main menu: ")
+      # try except to check if user input is int
+      try:
+          if (user_response == 'x'):
+              break
+      except:
+          pass  
   
   def AddUser(self, id):
     # Clear console

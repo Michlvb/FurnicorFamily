@@ -82,6 +82,7 @@ def SearchParams():
       print(err)
   return res
 
+#TODO: ADD LOGGING I THINK?
 def chooseCity():
   print(cityMsg)
   cities = ["Nagpur", "Montreal", "Abuja", "Peshawar", "Curitiba", "Shantou", "Dar es Salaam", "Ho Chi Minh City", "Lima", "Novosibirsk"]
