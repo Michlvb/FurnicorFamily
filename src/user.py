@@ -391,10 +391,10 @@ class SysAdmin(User):
   
   def PrintUsers(self, id):
     ClearConsole()
-    sql = '''SELECT username, password, role FROM users'''
+    sql = '''SELECT username, role FROM users'''
     try:
-      for username, password, role in self.dbConn.cur.execute(sql):
-        print(f"Username: {Decrypt(username)} has role: {Decrypt(role)} and password: {Decrypt(password)}\n")
+      for username, role in self.dbConn.cur.execute(sql):
+        print(f"Username: {Decrypt(username)} has role: {Decrypt(role)}\n")
 
       indexId = log.SystemCounter(id)
       # log print users
