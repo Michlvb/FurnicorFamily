@@ -322,9 +322,8 @@ class User:
           return
         
         sql = '''UPDATE users SET password = ? WHERE username = ? AND password = ?'''
-        self.dbConn.cur.execute(sql, (password, Encrypt(self.username), Encrypt(oldPassword[0])))
+        self.dbConn.cur.execute(sql, (password, Encrypt(self.username), oldPassword[0]))
         self.dbConn.conn.commit()
-        self.password = password
 
         indexId = log.SystemCounter(id)
         # log password updated
@@ -392,10 +391,10 @@ class SysAdmin(User):
   
   def PrintUsers(self, id):
     ClearConsole()
-    sql = '''SELECT username, role FROM users'''
+    sql = '''SELECT username, password, role FROM users'''
     try:
-      for username, role in self.dbConn.cur.execute(sql):
-        print(f"Username: {Decrypt(username)} has role: {Decrypt(role)}\n")
+      for username, password, role in self.dbConn.cur.execute(sql):
+        print(f"Username: {Decrypt(username)} has role: {Decrypt(role)} and password: {Decrypt(password)}\n")
 
       indexId = log.SystemCounter(id)
       # log print users
@@ -409,6 +408,15 @@ class SysAdmin(User):
       id = indexId
 
       print(err)
+  
+    while True:  
+        user_response = input("Press x to return to main menu: ")
+        # try except to check if user input is int
+        try:
+            if (user_response == 'x'):
+                break
+        except:
+            pass  
   
   def AddUser(self, id):
     # Clear console
