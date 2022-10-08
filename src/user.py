@@ -92,6 +92,7 @@ class User:
             break
         
       # Another input field to ask the user from which city they are.(at least they can choose from 10 different cities)
+      # REMOVE PRINTING MEMBER ADDRESS
       city = chooseCity()
       address = f"{streetName} {houseNumber} {zipcode} {city}"
       print(address)
@@ -387,22 +388,19 @@ class User:
     # This should be illegal
     data = tuple(memberInfo.values())
 
-    # sql = """
-    #   SELECT * FROM members
-    #   WHERE (Id LIKE '%' || ? || '%')
-    #     AND (firstname LIKE '%' || ? || '%')
-    #     AND (lastname LIKE '%' || ? || '%')
-    #     AND (address LIKE '%' || ? || '%')
-    #     AND (email LIKE '%' || ? || '%')
-    #     AND (mobilenumber LIKE '%' || ? || '%')
-    #   """
+    #TODO: Figure out a way to fix this sql statement
     sql = """
       SELECT * FROM members
-    """
+      WHERE (Id LIKE '%' || ? || '%')
+        AND (firstname LIKE '%' || ? || '%')
+        AND (lastname LIKE '%' || ? || '%')
+        AND (address LIKE '%' || ? || '%')
+        AND (email LIKE '%' || ? || '%')
+        AND (mobilenumber LIKE '%' || ? || '%')
+      """
+    
     # Execute sql and loop over the result
-    # for res in self.dbConn.cur.execute(sql, data):
-    #   print(res)
-    for res in self.dbConn.cur.execute(sql):
+    for res in self.dbConn.cur.execute(sql, data):
       print(res)
 
     indexId = log.SystemCounter(id)
@@ -410,6 +408,7 @@ class User:
     log.PrepareLog(indexId, "{self.username}", "Members searched", "/", "no")
     id = indexId
 
+    #TODO: Should return member, I guess? Double check with requirements
     while True:  
       user_response = input("Press x to return to main menu: ")
       # try except to check if user input is int
