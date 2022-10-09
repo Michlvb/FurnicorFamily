@@ -314,7 +314,7 @@ class User:
                 break 
       
       if modifyChoice == "0":
-        return
+        return id    
 
       try:
         self.dbConn.cur.execute(sql, (Encrypt(res), memberModified))
@@ -355,7 +355,7 @@ class User:
           # log password updated
           log.PrepareLog(indexId, f"{self.username}", "User not found", "", "no")
           id = indexId
-          return
+          return id
         
         sql = '''UPDATE users SET password = ? WHERE username = ? AND password = ?'''
         self.dbConn.cur.execute(sql, (password, Encrypt(self.username), oldPassword[0]))
@@ -365,6 +365,7 @@ class User:
         # log password updated
         log.PrepareLog(indexId, f"{self.username}", f"User: {self.username}'s password updated", "", "no")
         id = indexId
+        return id
       except sqlite3.Error as err:
 
         indexId = log.SystemCounter(id)
@@ -478,13 +479,13 @@ class SysAdmin(User):
       if (self.CheckUnique(username) == 1):
         indexId = log.SystemCounter(id)
         # log username
-        log.PrepareLog(indexId, f"{self.username}", f"{username} created", "username ", "no")
+        log.PrepareLog(indexId, f"{self.username}", f"{Decrypt(username)} created", "username ", "no")
         id = indexId
         break
       else:
         indexId = log.SystemCounter(id)
         # log username was taken
-        log.PrepareLog(indexId, f"{self.username}", "Add user username taken", f"username {username} was taken", "no")
+        log.PrepareLog(indexId, f"{self.username}", "Add user username taken", f"username {Decrypt(username)} was taken", "no")
         id = indexId
 
         print("Taken.")
@@ -521,7 +522,7 @@ class SysAdmin(User):
       print("User added\n")
       indexId = log.SystemCounter(id)
       # log user added
-      log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {username} added to the system", "no")
+      log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {Decrypt(username)} added to the system", "no")
       id = indexId
     else:
       print("No rows affected\n")
@@ -706,6 +707,8 @@ class SysAdmin(User):
     if (exists("Backup.zip") and exists(dst)):
       os.remove(dst)
     
+    return id
+
     return id
 
   def RestoreBackup(self, id):

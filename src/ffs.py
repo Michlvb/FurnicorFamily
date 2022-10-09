@@ -25,9 +25,6 @@ def main():
 
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
-  user = SuperAdmin()
-  user.RestoreBackup(1)
-  exit(1)
   choice = "0"
   # loop for menu choices login and exit
   while not (choice == "1" or choice == "2"):
@@ -50,7 +47,7 @@ def main():
         id = id
         indexId = log.SystemCounter(id)
         # log menu choice
-        log.PrepareLog(indexId, f"{self.username}", "Main Menu login chosen", "/", "no")
+        log.PrepareLog(indexId, f"{user.username}", "Main Menu login chosen", "/", "no")
         id = indexId
         ui.mainMenu(user, id)
     # exit program
@@ -61,7 +58,7 @@ def main():
       print("incorrect input, please try again")
       indexId= log.SystemCounter(id)
       # log incorrect user input
-      log.PrepareLog(indexId, f"{self.username}", "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
+      log.PrepareLog(indexId, f"{user.username}", "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
       id= indexId
 
 def decryptUser(data):
@@ -83,11 +80,11 @@ def login(id):
         passwordTry = input("Password: ")
 
         if (usernameTry == superadmin and passwordTry == superadminpassword):
+          user = SuperAdmin()
           indexId = log.SystemCounter(id)
             # log log in successful
-          log.PrepareLog(indexId, "Super admin", "Logged in", "/", "no")
+          log.PrepareLog(indexId, f"{user.username}", "Logged in", "/", "no")
           id = indexId
-          user = SuperAdmin()
           return user, id
         else:
           # Get user
@@ -101,14 +98,14 @@ def login(id):
 
             indexId = log.SystemCounter(id)
             # log log in successful
-            log.PrepareLog(indexId, "user", "Logged in", "/", "no")
+            log.PrepareLog(indexId, f"{user.username}", "Logged in", "/", "no")
             id = indexId
 
             return user, id
         else:
             indexId = log.SystemCounter(id)
             # log unsuccessful login
-            log.PrepareLog(indexId, f"{self.username}", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
+            log.PrepareLog(indexId, f"{usernameTry}", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
             id = indexId
 
             loginAttempt+=1
@@ -116,7 +113,7 @@ def login(id):
             
     indexId = log.SystemCounter(id)
     # log multiple incorrect logins
-    log.PrepareLog(indexId, f"{self.username}", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
+    log.PrepareLog(indexId, f"{usernameTry}", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
     id = indexId
 
     print("Too many login attempts, try again later.")
