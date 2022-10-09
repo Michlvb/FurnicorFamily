@@ -82,6 +82,7 @@ def SearchParams():
       print(err)
   return res
 
+#TODO: ADD LOGGING I THINK?
 def chooseCity():
   print(cityMsg)
   cities = ["Nagpur", "Montreal", "Abuja", "Peshawar", "Curitiba", "Shantou", "Dar es Salaam", "Ho Chi Minh City", "Lima", "Novosibirsk"]
@@ -128,9 +129,10 @@ def ValidateOptionValue(option):
   elif option == "lastname":
     res = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter the last name: ")
     return res
+  #Fix address
   elif option == "address":
-    street = verifyInput("^[-a-zA-Z,']+$", "Please enter the street name: ")
-    houseNum = verifyInput("[1-9]+", "Please enter the house number: ")
+    street = verifyInput("^[-a-zA-Z ,.']+$", "Please enter the street name: ")
+    houseNum = verifyInput("^[0-9]{0,4}$", "Please enter the house number: ")
     zipCode = verifyInput("^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-zA-Z]{2}$", "Please enter the zipCode: ")
     city    = chooseCity()
     address = f"{street} {houseNum} {zipCode} {city}"

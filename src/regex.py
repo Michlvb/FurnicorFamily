@@ -1,4 +1,5 @@
 import re
+import random
 
 def idGenerate():
     x = True
@@ -18,7 +19,7 @@ def idGenerate():
             continue
         else:
             break
-    print(f"A member ID has been made with the number {digits}")
+    return digits
 
 def regexID(memberID):
     memberIdRe = re.search("^[1-9]+$", memberID)
@@ -44,8 +45,9 @@ def regexEmail(email):
     emailRe = re.search("([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+((\.[A-Z|a-z]{2,})+)", email)
     return emailRe
 
+#TODO: Needs to be changed - Accepts dashes and other stuff (should only accept numbers)
 def regexPhone(phonenumber):
-    phoneRe = re.search("(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})", phonenumber)
+    phoneRe = re.search("([0-8]{0,8})", phonenumber)
     return phoneRe
 
 def regexUsername():
