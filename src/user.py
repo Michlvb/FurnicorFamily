@@ -671,8 +671,12 @@ class SysAdmin(User):
     dst = "backup.db"
 
     # Create backup
-    with sqlite3.connect(dst) as bck:
-      self.dbConn.conn.backup(bck, pages=-1)
+    # with sqlite3.connect(dst) as bck:
+    #   self.dbConn.conn.backup(bck, pages=-1)
+
+    bck = sqlite3.connect(dst)
+    self.dbConn.conn.backup(bck, pages=-1)
+    bck.close()
     
     # # Create zip
     with ZipFile("Backup.zip", 'w') as zip:
@@ -697,14 +701,23 @@ class SysAdmin(User):
       print(zipNotFound)
       return id
 
+    self.dbConn.conn.close()
+
     if (exists(standardName)):
       os.remove(standardName)
 
-    with ZipFile("Backup.zip") as zip:
-      zip.extract("log.txt")
-      zip.extract(backupName)
+    zip = ZipFile("Backup.zip")
+    zip.extract("log.txt")
+    zip.extract(backupName)
+    zip.close()
+
+    # with ZipFile("Backup.zip") as zip:
+    #   zip.extract("log.txt")
+    #   zip.extract(backupName)
 
     os.rename(backupName, standardName)
+
+    self.dbConn.conn = sqlite3.connect(standardName)
 
     # Log
     indexId = log.SystemCounter(id)
