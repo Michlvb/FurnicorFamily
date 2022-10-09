@@ -2,10 +2,7 @@ from time import sleep
 from typing import Tuple
 from Database.database import Database
 from UI import ui
-from os import system
 from Log import log
-import re
-import random
 from unicodedata import digit
 from utils import ClearConsole
 from Log.log import Decrypt, Encrypt
@@ -27,8 +24,8 @@ def main():
 
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
-  # user = SuperAdmin()
-  # user.SearchMember(1)
+  user = SuperAdmin()
+  user.SearchMember(1)
 
   choice = "0"
   # loop for menu choices login and exit
@@ -81,7 +78,6 @@ def decryptUser(data):
 
 def login(id):
     loginAttempt = 0
-    x = True
     db = Database()
     while loginAttempt < 3:
         usernameTry = input("Username: ")
@@ -123,9 +119,8 @@ def login(id):
     # log multiple incorrect logins
     log.PrepareLog(indexId, "testname", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
     id = indexId
-    loggedIn = False
 
     print("Too many login attempts, try again later.")
-    return loggedIn, id      
+    exit(1)
 
 main()

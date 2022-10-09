@@ -382,10 +382,7 @@ class User:
     else:
       for i in range(len(options)):
         # Setting Encryption
-        if (options[i] == 'address' or options[i] == 'email' or options[i] == 'phone'):
-          memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
-        else:
-          memberInfo[options[i]] = ValidateOptionValue(options[i])
+        memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
 
     # This should be illegal
     data = tuple(memberInfo.values())
@@ -404,9 +401,21 @@ class User:
     for res in self.dbConn.cur.execute(sql, data):
       for value in res:
         user.append(Decrypt(str(value)))
-
+    
     if user == []:
       print("User not found.")
+      indexId = log.SystemCounter(id)
+      # log Search member
+      log.PrepareLog(indexId, "{self.username}", "Member not found", "/", "no")
+      id = indexId
+      while True:
+        user_response = input("Press x to return to main menu: ")
+        # try except to check if user input is int
+        try:
+            if (user_response == 'x'):
+              break
+        except:
+            pass
       return
     
     print(f"User details:\nId: {user[0]}\nFirstname: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
@@ -416,7 +425,6 @@ class User:
     log.PrepareLog(indexId, "{self.username}", "Members searched", "/", "no")
     id = indexId
 
-    #TODO: Should return member, I guess? Double check with requirements
     while True:  
       user_response = input("Press x to return to main menu: ")
       # try except to check if user input is int
@@ -437,7 +445,7 @@ class SysAdmin(User):
     try:
       for username, role in self.dbConn.cur.execute(sql):
         print(f"Username: {Decrypt(username)} has role: {Decrypt(role)}\n")
-
+  
       indexId = log.SystemCounter(id)
       # log print users
       log.PrepareLog(indexId, "{self.username}", "Print users", "/", "no")
