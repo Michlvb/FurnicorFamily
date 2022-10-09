@@ -4,6 +4,7 @@ from Database.database import Database
 from UI import ui
 from Log import log
 from unicodedata import digit
+from regex import regexPhone
 from utils import ClearConsole
 from Log.log import Decrypt, Encrypt
 
@@ -24,7 +25,9 @@ def main():
 
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
-
+  user = SuperAdmin()
+  user.ResetPassword(1)
+  exit(1)
   choice = "0"
   # loop for menu choices login and exit
   while not (choice == "1" or choice == "2"):

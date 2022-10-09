@@ -107,7 +107,6 @@ class User:
         else:
             break
       
-      #TODO: Check add mobile number
       while True:    
         mobilePhone = input("Enter your phone number (+31-6-DDDDDDDD): ")
         outcomeRe = regex.regexPhone(mobilePhone)
@@ -131,14 +130,15 @@ class User:
         self.dbConn.conn.commit()
 
         indexId = log.SystemCounter(id)
-        # log member add. KYLIAN WHY IS THIS "YES"?
         log.PrepareLog(indexId, f"{self.username}", "Member added to database", "/", "yes")
         id = indexId
+        print("Member added\n")
       except sqlite3.Error as err:
         indexId = log.SystemCounter(id)
         # log database error
         log.PrepareLog(indexId, f"{self.username}", "Add user database error", "/", "yes")
         id = indexId
+      return id
 
   def modifyMember(self, id):
       checkSum = 0;
@@ -402,7 +402,7 @@ class User:
         user.append(Decrypt(str(value)))
     
     if user == []:
-      print("User not found.")
+      print("Member not found.")
       indexId = log.SystemCounter(id)
       # log Search member
       log.PrepareLog(indexId, f"{self.username}", "Member not found", "/", "no")
@@ -410,7 +410,7 @@ class User:
 
       return id
     
-    print(f"User details:\nId: {user[0]}\nFirstname: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
+    print(f"User details:\nId: {user[0]}\nFirst name: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
 
     indexId = log.SystemCounter(id)
     # log Search member
@@ -452,9 +452,8 @@ class SysAdmin(User):
       username     = CreateUsername()
       username     = Encrypt(username.lower())
       if (self.CheckUnique(username) == 1):
-        #Mayb add prepare log here?
         indexId = log.SystemCounter(id)
-        # log username was taken
+        # log username
         log.PrepareLog(indexId, f"{self.username}", f"{username} created", "username ", "no")
         id = indexId
         break
@@ -466,17 +465,15 @@ class SysAdmin(User):
 
         print("Taken.")
         continue
-    
     password     = CreatePassword()
     if self.role == "sysadmin":
       role         = verifyInput("(advisor)", "Please enter the role of the user: ").lower()
     else:
       role       = verifyInput("(sysadmin|advisor|Advisor|Sysadmin)", "Please enter the role of the user: ").lower()
-    firstname    = verifyInput("^[-a-zA-Z,']+$", "Please enter your firstname: ").lower()
-    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ").lower()
+    firstname    = verifyInput("^[-a-zA-Z,']+$", "Please enter your first name: ").lower()
+    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your last name: ").lower()
     registration = datetime.today().strftime('%d-%m-%Y')
 
-    # TODO: add encryption - DONE
     password     = Encrypt(password)
     role         = Encrypt(role)
     firstname    = Encrypt(firstname)
@@ -498,7 +495,6 @@ class SysAdmin(User):
     # Check if executed.
     if self.dbConn.cur.rowcount > 0:
       print("User added\n")
-
       indexId = log.SystemCounter(id)
       # log user added
       log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {username} added to the system", "no")
@@ -547,13 +543,13 @@ class SysAdmin(User):
         newValue     = verifyInput("(sysadmin|advisor)", "Please enter the role of the user: ") 
     elif option == 'lastname':
       sql = '''UPDATE users SET lastname = ? WHERE username = ? AND lastname = ?'''
-      newValue = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ")
+      newValue = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your last name: ")
     elif option == 'username':
       sql = '''UPDATE users SET username = ? WHERE username = ? AND lastname = ?'''
       newValue = regex.regexUsername()
     elif option == 'firstname':
       sql = '''UPDATE users SET firstname = ? WHERE username = ? AND lastname = ?'''
-      newValue = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname of the user: ")
+      newValue = verifyInput("^[-a-zA-Z,']+$", "Please enter the first name of the user: ")
 
     try:
       self.dbConn.cur.execute(sql, (Encrypt(newValue), username, lastname))
@@ -624,7 +620,7 @@ class SysAdmin(User):
   def ResetPassword(self, id):
     tempPassword = "test123!"
 
-    # # Get username
+    # Get username
     username = Encrypt(regex.regexUsername())
 
     # Get role
@@ -633,11 +629,11 @@ class SysAdmin(User):
     if self.role == "sysadmin" and role != 'advisor':
       indexId = log.SystemCounter(id)
       # log incorrect password reset
-      log.PrepareLog(indexId, f"{self.username}", "Reset password error", f"User tried to reset password of {username}", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Reset password unauthorized", f"User tried to reset password of {username}", "yes")
       id = indexId
 
       print(unauthorized) #Remove statement for logging
-      return
+      return id
     else:
       try:
         sql = '''UPDATE USERS SET password = ? WHERE username = ? AND role = ?'''
@@ -648,6 +644,7 @@ class SysAdmin(User):
         # log invalid input
         log.PrepareLog(indexId, f"{self.username}", f"{err}", "/", "yes")
         id = indexId
+        return id
       
       # Check if executed.
       if self.dbConn.cur.rowcount > 0:
@@ -655,20 +652,14 @@ class SysAdmin(User):
         # log password changed
         log.PrepareLog(indexId, f"{self.username}", "Password changed", f"User: {username}'s password was changed", "no")
         id = indexId
-        print("password successfully changed")
-
+        print("The following password is set: test123!")
       else:
         indexId = log.SystemCounter(id)
         # log no password reset
         log.PrepareLog(indexId, f"{self.username}", "Password reset failed", f"Password of user {username} was not changed", "no")
         id = indexId
         print("Failed to change password")
-    
-
-  def LogBackup(self, status, remaining, total):
-    # TODO: Add logging
-    # Send data to log function
-    print(f'Copied {total-remaining} of {total} pages...')
+      return id
 
   def BackupDB(self, id):
     # Log
@@ -676,37 +667,49 @@ class SysAdmin(User):
     log.PrepareLog(indexId, f"{self.username}", "Backup of system made", f"User {self.username} made a backup of the system", "no")
     id = indexId
 
-    backupName = "BackUp.db"
+    dst = "backup.db"
 
     # Create backup
-    with sqlite3.connect(backupName) as bck:
-      self.dbConn.conn.backup(bck, pages=-1, progress=self.LogBackup)
+    with sqlite3.connect(dst) as bck:
+      self.dbConn.conn.backup(bck, pages=-1)
     
-    # Create zip
+    # # Create zip
     with ZipFile("Backup.zip", 'w') as zip:
       zip.write("log.txt")
-      zip.write(backupName)
+      zip.write(dst)
     
     # Remove backup file when zip created
-    if (exists("Backup.zip") and exists(backupName)):
-      os.remove(backupName)
+    if (exists("Backup.zip") and exists(dst)):
+      os.remove(dst)
 
   def RestoreBackup(self, id):
+    backupName = "backup.db"
+    standardName = "highlyClassified.db"
+    if (not exists("Backup.zip")):
+      # Log
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, f"{self.username}", "No backup file found", "/", "no")
+      id = indexId
+
+      print(zipNotFound)
+      return id
+
+    if (exists(standardName)):
+      os.remove(standardName)
+
+    with ZipFile("Backup.zip") as zip:
+      zip.extract("log.txt")
+      zip.extract(backupName)
+
+    os.rename(backupName, standardName)
+
     # Log
     indexId = log.SystemCounter(id)
     log.PrepareLog(indexId, f"{self.username}", "Backup restored", f"User {self.username} restored the system", "no")
     id = indexId
-    # Restore files (it overrides the current files)
-    backupName = "highlyClassified.db"
-    if (not exists("Backup.zip")):
-      print(zipNotFound)
-      return
-
-    PathToUnzip = "Database"
-    with ZipFile("Backup.zip") as zip:
-      zip.extract("log.txt")
-      zip.extract(backupName, path=PathToUnzip)
-
+    return id
+  
+  #Is this relevant?
   def PrintLog(self):
     ClearConsole()
     if (exists("log.txt")):
@@ -717,7 +720,6 @@ class SysAdmin(User):
       print(genericError)
 
   def CheckUnique(self, data):
-    # TODO: Add check to see if user is unique
     sql = """
       SELECT username FROM users
       WHERE username = ?
@@ -729,33 +731,40 @@ class SysAdmin(User):
         return 1
     return 1
 
-  def DeleteMember(self):
+  def DeleteMember(self, id):
     # Clear the console
     ClearConsole()
 
     # Get user info
-    firstname = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname: ")
-    lastname  = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter the lastname: ")
-    memberid  = verifyInput("^[1-9]+$", "Please enter the member ID: ")
+    firstname = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname: ").lower()
+    lastname  = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter the lastname: ").lower()
+    memberid  = verifyInput("^[0-9]+$", "Please enter the member ID: ")
 
-    # TODO: Add encryption
     firstname = Encrypt(firstname)
     lastname  = Encrypt(lastname)
     memberid  = Encrypt(memberid)
 
     try:
-      sql = '''DELETE FROM members WHERE Firstname = ? AND Lastname = ? AND Id = ?'''
+      sql = '''DELETE FROM members WHERE firstname = ? AND lastname = ? AND id = ?'''
       self.dbConn.cur.execute(sql, (firstname, lastname, memberid))
       self.dbConn.conn.commit()
     except sqlite3.Error as err:
-      print(err) 
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, f"{self.username}", str(err), "Error occurred while deleting member", "no")
+      id = indexId
+      return id
 
-    # Check if executed.
-    # TODO: Logging
     if self.dbConn.cur.rowcount > 0:
       print("Member deleted\n")
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, f"{self.username}", f"Member {firstname}", f"User {self.username} deleted a member", "no")
+      id = indexId
     else:
       print("No rows affected\n")
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, f"{self.username}", "No member deleted", f"User {self.username} tried to delete a member", "no")
+      id = indexId
+    return id
 
 
 

@@ -47,7 +47,7 @@ def regexEmail(email):
 
 #TODO: Needs to be changed - Accepts dashes and other stuff (should only accept numbers)
 def regexPhone(phonenumber):
-    phoneRe = re.search("([0-8]{0,8})", phonenumber)
+    phoneRe = re.search("(^[0-8]{8}$)", phonenumber)
     return phoneRe
 
 def regexUsername():
