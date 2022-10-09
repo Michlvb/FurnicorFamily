@@ -620,7 +620,7 @@ class SysAdmin(User):
   def ResetPassword(self, id):
     tempPassword = "test123!"
 
-    # # Get username
+    # Get username
     username = Encrypt(regex.regexUsername())
 
     # Get role
@@ -629,11 +629,11 @@ class SysAdmin(User):
     if self.role == "sysadmin" and role != 'advisor':
       indexId = log.SystemCounter(id)
       # log incorrect password reset
-      log.PrepareLog(indexId, f"{self.username}", "Reset password error", f"User tried to reset password of {username}", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Reset password unauthorized", f"User tried to reset password of {username}", "yes")
       id = indexId
 
       print(unauthorized) #Remove statement for logging
-      return
+      return id
     else:
       try:
         sql = '''UPDATE USERS SET password = ? WHERE username = ? AND role = ?'''
@@ -644,6 +644,7 @@ class SysAdmin(User):
         # log invalid input
         log.PrepareLog(indexId, f"{self.username}", f"{err}", "/", "yes")
         id = indexId
+        return id
       
       # Check if executed.
       if self.dbConn.cur.rowcount > 0:
@@ -651,14 +652,14 @@ class SysAdmin(User):
         # log password changed
         log.PrepareLog(indexId, f"{self.username}", "Password changed", f"User: {username}'s password was changed", "no")
         id = indexId
-        print("password successfully changed")
-
+        print("The following password is set: test123!")
       else:
         indexId = log.SystemCounter(id)
         # log no password reset
         log.PrepareLog(indexId, f"{self.username}", "Password reset failed", f"Password of user {username} was not changed", "no")
         id = indexId
         print("Failed to change password")
+      return id
 
   def BackupDB(self, id):
     # Log
@@ -682,7 +683,6 @@ class SysAdmin(User):
       os.remove(dst)
 
   def RestoreBackup(self, id):
-    # Restore files (it overrides the current files)
     backupName = "backup.db"
     standardName = "highlyClassified.db"
     if (not exists("Backup.zip")):
@@ -708,7 +708,8 @@ class SysAdmin(User):
     log.PrepareLog(indexId, f"{self.username}", "Backup restored", f"User {self.username} restored the system", "no")
     id = indexId
     return id
-
+  
+  #Is this relevant?
   def PrintLog(self):
     ClearConsole()
     if (exists("log.txt")):

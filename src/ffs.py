@@ -26,7 +26,7 @@ def main():
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
   user = SuperAdmin()
-  user.PrintUsers(1)
+  user.ResetPassword(1)
   exit(1)
   choice = "0"
   # loop for menu choices login and exit
