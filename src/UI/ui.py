@@ -89,7 +89,7 @@ def menuNav(user, id):
         if (choiceMenu in options):
             indexId = log.SystemCounter(id)
             # log chosen option
-            log.PrepareLog(indexId, "testname%i" % indexId, "Menu navigation option chosen", "/", "no")
+            log.PrepareLog(indexId, f"{user.username}" , "Menu navigation option chosen", "/", "no")
             id = indexId
             if (choiceMenu == "0"):
                 exit()
@@ -100,7 +100,7 @@ def menuNav(user, id):
         else:
             indexId = log.SystemCounter(id)
             # log incorrect user input
-            log.PrepareLog(indexId, "testname%i" % indexId, "Menu navigation incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
+            log.PrepareLog(indexId, f"{user.username}" , "Menu navigation incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
             id = indexId
             ClearConsole()
             print("That is not an option. Please choose one of the following options:")
@@ -110,7 +110,7 @@ def OptionNavigation(options, user, id):
     if (options == "1"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.addMember(id)
 
@@ -118,13 +118,13 @@ def OptionNavigation(options, user, id):
         if (user.role == "superadmin"):
             indexId = log.SystemCounter(id)
             # log user choice
-            log.PrepareLog(indexId, 'testname%i' % indexId, 'Option navigation option chosen', 'input: "%s" used as choice by Super Admin' % options, 'no')
+            log.PrepareLog(indexId, 'testname%i' , 'Option navigation option chosen', 'input: "%s" used as choice by Super Admin' % options, 'no')
             id = indexId
             user.ResetPassword(id)
         else:
             indexId = log.SystemCounter(id)
             # log user choice
-            log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+            log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
             id = indexId
             user.updatePassword(id)
 
@@ -132,98 +132,98 @@ def OptionNavigation(options, user, id):
         # ModifyMember()
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.modifyMember(id)
         
     if (options == "4"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.SearchMember(id)
 
     if (options == "5"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.PrintUsers(id)
 
     if (options == "6"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.AddUser(id)
 
     if (options == "7"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.UpdateUser(id)
 
     if (options == "8"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.DeleteUser(id)
 
     if (options == "9"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.ResetPassword(id)
 
     if (options == "10"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.BackupDB(id)
     
     if (options == "11"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.Reset(id)
     
     if (options == "12"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         log.PrintLog()
 
     if (options == "13"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.DeleteMember(id)
 
     if (options == "14"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.AddUser(id)
 
     if (options == "15"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: %s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: %s' used as choice" % options, "no")
         id = indexId
         user.UpdateUser(id)
 
     if (options == "16"):
         indexId = log.SystemCounter(id)
         # log user choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
         user.DeleteUser(id)
     

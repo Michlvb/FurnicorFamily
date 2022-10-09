@@ -54,7 +54,7 @@ def main():
         id = id
         indexId = log.SystemCounter(id)
         # log menu choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
+        log.PrepareLog(indexId, f"{user.username}" , "Main Menu login chosen", "/", "no")
         id = indexId
         ui.mainMenu(user, id)
     # exit program
@@ -65,7 +65,7 @@ def main():
       print("incorrect input, please try again")
       indexId= log.SystemCounter(id)
       # log incorrect user input
-      log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
+      log.PrepareLog(indexId, f"{user.username}" , "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
       id= indexId
 
 def decryptUser(data):
@@ -88,11 +88,11 @@ def login(id):
         passwordTry = input("Password: ")
 
         if (usernameTry == superadmin and passwordTry == superadminpassword):
+          user = SuperAdmin()
           indexId = log.SystemCounter(id)
             # log log in successful
-          log.PrepareLog(indexId, "Super admin", "Logged in", "/", "no")
+          log.PrepareLog(indexId, f"{user.username}", "Logged in", "/", "no")
           id = indexId
-          user = SuperAdmin()
           return user, id
         else:
           # Get user
@@ -106,14 +106,14 @@ def login(id):
 
             indexId = log.SystemCounter(id)
             # log log in successful
-            log.PrepareLog(indexId, "user", "Logged in", "/", "no")
+            log.PrepareLog(indexId, f"{user.username}", "Logged in", "/", "no")
             id = indexId
 
             return user, id
         else:
             indexId = log.SystemCounter(id)
             # log unsuccessful login
-            log.PrepareLog(indexId, "testname", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
+            log.PrepareLog(indexId, f"{user.username}", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
             id = indexId
 
             loginAttempt+=1
@@ -121,7 +121,7 @@ def login(id):
             
     indexId = log.SystemCounter(id)
     # log multiple incorrect logins
-    log.PrepareLog(indexId, "testname", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
+    log.PrepareLog(indexId, f"{user.username}", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
     id = indexId
     loggedIn = False
 
