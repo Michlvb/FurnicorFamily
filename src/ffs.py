@@ -50,7 +50,7 @@ def main():
         id = id
         indexId = log.SystemCounter(id)
         # log menu choice
-        log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu login chosen", "/", "no")
+        log.PrepareLog(indexId, f"{self.username}", "Main Menu login chosen", "/", "no")
         id = indexId
         ui.mainMenu(user, id)
     # exit program
@@ -61,8 +61,8 @@ def main():
       print("incorrect input, please try again")
       indexId= log.SystemCounter(id)
       # log incorrect user input
-      log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
-      id = indexId
+      log.PrepareLog(indexId, f"{self.username}", "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
+      id= indexId
 
 def decryptUser(data):
     decryptedData = []
@@ -108,7 +108,7 @@ def login(id):
         else:
             indexId = log.SystemCounter(id)
             # log unsuccessful login
-            log.PrepareLog(indexId, "testname", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Unsuccessful login", 'Username: "%s" is used for a login attempt with a wrong password' % usernameTry, "no")
             id = indexId
 
             loginAttempt+=1
@@ -116,7 +116,7 @@ def login(id):
             
     indexId = log.SystemCounter(id)
     # log multiple incorrect logins
-    log.PrepareLog(indexId, "testname", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
+    log.PrepareLog(indexId, f"{self.username}", "Unsuccessful login", "Multiple usernames and passwords are tried in a row", "yes")
     id = indexId
 
     print("Too many login attempts, try again later.")
