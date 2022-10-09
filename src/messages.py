@@ -20,8 +20,10 @@ searchMsg = """Press one or multiple of the following numbers to choose the opti
 """
 
 singleOption = """Press one of the following numbers to update the value
-[1] - role
-[2] - Lastname
+[1] - Username
+[2] - Role
+[3] - Firstname
+[4] - Lastname
 """
 
 cityMsg = """The following cities can be chosen:

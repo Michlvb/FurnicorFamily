@@ -407,15 +407,8 @@ class User:
       # log Search member
       log.PrepareLog(indexId, f"{self.username}", "Member not found", "/", "no")
       id = indexId
-      while True:
-        user_response = input("Press x to return to main menu: ")
-        # try except to check if user input is int
-        try:
-            if (user_response == 'x'):
-              break
-        except:
-            pass
-      return
+
+      return id
     
     print(f"User details:\nId: {user[0]}\nFirstname: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
 
@@ -424,14 +417,8 @@ class User:
     log.PrepareLog(indexId, f"{self.username}", "Members searched", "/", "no")
     id = indexId
 
-    while True:  
-      user_response = input("Press x to return to main menu: ")
-      # try except to check if user input is int
-      try:
-          if (user_response == 'x'):
-            break
-      except:
-          pass
+    return id
+
     
 
 class SysAdmin(User):
@@ -449,23 +436,12 @@ class SysAdmin(User):
       # log print users
       log.PrepareLog(indexId, f"{self.username}", "Print users", "/", "no")
       id = indexId
-
-      while True:  
-        user_response = input("Press x to return to main menu: ")
-        # try except to check if user input is int
-        try:
-            if (user_response == 'x'):
-                break
-        except:
-            pass  
-
     except sqlite3.Error as err:
       indexId = log.SystemCounter(id)
       # log invalid input
       log.PrepareLog(indexId, f"{self.username}", "Print users", "Error printing users", "yes")
       id = indexId
-
-      print(err)
+    return id
   
   def AddUser(self, id):
     # Clear console
@@ -493,16 +469,16 @@ class SysAdmin(User):
     
     password     = CreatePassword()
     if self.role == "sysadmin":
-      role         = verifyInput("(advisor)", "Please enter the role of the user: ")
+      role         = verifyInput("(advisor)", "Please enter the role of the user: ").lower()
     else:
-      role       = verifyInput("(sysadmin|advisor|Advisor|Sysadmin)", "Please enter the role of the user: ")
-    firstname    = verifyInput("^[-a-zA-Z,']+$", "Please enter your firstname: ")
-    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ")
+      role       = verifyInput("(sysadmin|advisor|Advisor|Sysadmin)", "Please enter the role of the user: ").lower()
+    firstname    = verifyInput("^[-a-zA-Z,']+$", "Please enter your firstname: ").lower()
+    lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ").lower()
     registration = datetime.today().strftime('%d-%m-%Y')
 
     # TODO: add encryption - DONE
     password     = Encrypt(password)
-    role         = Encrypt(role.lower())
+    role         = Encrypt(role)
     firstname    = Encrypt(firstname)
     lastname     = Encrypt(lastname)
     registration = Encrypt(registration)
@@ -517,7 +493,7 @@ class SysAdmin(User):
       # log database error
       log.PrepareLog(indexId, f"{self.username}", "Add user database error", "/", "yes")
       id = indexId
-      return
+      return id
 
     # Check if executed.
     if self.dbConn.cur.rowcount > 0:
@@ -527,75 +503,95 @@ class SysAdmin(User):
       # log user added
       log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {username} added to the system", "no")
       id = indexId
-
     else:
       print("No rows affected\n")
-
       indexId = log.SystemCounter(id)
       # log user not added
       log.PrepareLog(indexId, f"{self.username}", "Add user failed", "/", "no")
       id = indexId
+    return id
 
-  def GetUser(self, data):
+  def GetUser(self, data, id):
     try:
       sql = '''SELECT * FROM users WHERE username = ? AND lastname = ?'''
       self.dbConn.cur.execute(sql, data)
       user = self.dbConn.cur.fetchone()
-    except sqlite3.Error as err:
-      # TODO: Add Logging
-      print(err)
-    return user
 
-  #TODO:  CHECK UPDATE USER
-  def UpdateUser(self):
-    username = Encrypt(CreateUsername())
+      indexId = log.SystemCounter(id)
+      # log user added
+      log.PrepareLog(indexId, f"{self.username}", "User fetched", "/", "no")
+      id = indexId
+    except sqlite3.Error as err:
+      print(err)
+      indexId = log.SystemCounter(id)
+      # log user added
+      log.PrepareLog(indexId, f"{self.username}", str(err), "Error occurred while fetching user", "no")
+      id = indexId
+    return user, id
+
+  def UpdateUser(self, id):
+    username = Encrypt(regex.regexUsername())
     lastname = Encrypt(verifyInput("^[-a-zA-Z,'\s]+$", "Please enter the lastname: "))
-    user = self.GetUser((username, lastname))
+    user, id = self.GetUser((username, lastname), id)
 
     if user is None:
-      # TODO: Log
-      # BAsically user not found
-      return
+      print("User not found.")
+      return id
 
     option = getValue()
     if option == 'role':
-      sql = '''UPDATE users SET role = ?'''
+      sql = '''UPDATE users SET role = ? WHERE username = ? AND lastname = ?'''
       if self.role == "sysadmin":
         newValue     = verifyInput("(advisor)", "Please enter the role of the user: ")
       else:
         newValue     = verifyInput("(sysadmin|advisor)", "Please enter the role of the user: ") 
     elif option == 'lastname':
-      sql = '''UPDATE users SET lastname = ?'''
+      sql = '''UPDATE users SET lastname = ? WHERE username = ? AND lastname = ?'''
       newValue = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ")
+    elif option == 'username':
+      sql = '''UPDATE users SET username = ? WHERE username = ? AND lastname = ?'''
+      newValue = regex.regexUsername()
+    elif option == 'firstname':
+      sql = '''UPDATE users SET firstname = ? WHERE username = ? AND lastname = ?'''
+      newValue = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname of the user: ")
 
     try:
-      self.dbConn.cur.execute(sql, (newValue, ))
+      self.dbConn.cur.execute(sql, (Encrypt(newValue), username, lastname))
       self.dbConn.conn.commit()
     except sqlite3.Error as err:
-      # TODO: Add logging
-      print(err)
-   
+      indexId = log.SystemCounter(id)
+      # log user added
+      log.PrepareLog(indexId, f"{self.username}", str(err), "Error occurred while updating user", "no")
+      id = indexId
+      return id
 
     # Check if executed.
     if self.dbConn.cur.rowcount > 0:
-      # TODO: Add logging
+      indexId = log.SystemCounter(id)
+      # log user added
+      log.PrepareLog(indexId, f"{self.username}", "User information updated", "", "no")
+      id = indexId
       print("User updated\n")
     else:
+      indexId = log.SystemCounter(id)
+      # log user added
+      log.PrepareLog(indexId, f"{self.username}",  "No information updated", "", "no")
+      id = indexId
       print("No rows affected\n")
+    return id
 
   def DeleteUser(self, id):
     # Clear console
     ClearConsole()
 
     username  = regex.regexUsername()
-    firstname = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname of the user: ")
+    firstname = verifyInput("^[-a-zA-Z,']+$", "Please enter the firstname of the user to be deleted: ")
 
     if self.role == "sysadmin":
       role = verifyInput("(advisor)", "Please enter the role of the user: ")
     else:
       role = verifyInput("(sysadmin|advisor)", "Please enter the role of the user: ")
 
-    #TODO: add encrypt
     username  = Encrypt(username)
     firstname = Encrypt(firstname)
     role      = Encrypt(role)
@@ -610,16 +606,17 @@ class SysAdmin(User):
       log.PrepareLog(indexId, f"{self.username}", "Delete user failed", "Incorrect input", "yes")
       id = indexId
     
-    # TODO: Add logging under both prints
     if self.dbConn.cur.rowcount > 0:
+      print("User deleted\n")
       indexId = log.SystemCounter(id)
       # log Advisor deleted
-      log.PrepareLog(indexId, f"{self.username}", "Advisor deleted", f"Advisor: {username} deleted", "no")
+      log.PrepareLog(indexId, f"{self.username}", "user deleted", f"Advisor: {username} deleted", "no")
       id = indexId
     else:
+      print("No user deleted\n")
       indexId = log.SystemCounter(id)
       # log no advisor deleted
-      log.PrepareLog(indexId, f"{self.username}", "No Advisor deleted", f"Username: {username} was not deleted", "no")
+      log.PrepareLog(indexId, f"{self.username}", "No user deleted", f"Username: {username} was not deleted", "no")
       id = indexId
 
     return id

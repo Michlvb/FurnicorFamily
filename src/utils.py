@@ -103,12 +103,12 @@ def chooseCity():
 
 def getValue():
   print(singleOption)
-  options = ["role", "lastname"]
+  options = ["username","role", "firstname", "lastname"]
   option  = ""
   while True:
     num = input("Enter number: ")
     try:
-      if bool(re.fullmatch("[1-2]", num)):
+      if bool(re.fullmatch("[1-4]", num)):
         num = int(num)
         option += options[num-1]
         break

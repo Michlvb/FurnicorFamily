@@ -25,10 +25,6 @@ def main():
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
 
-  user = SuperAdmin()
-  # user.PrintUsers(1)
-  log.PrintLog()
-  exit(1)
   choice = "0"
   # loop for menu choices login and exit
   while not (choice == "1" or choice == "2"):
@@ -45,8 +41,6 @@ def main():
       pass
 
     # if else statement to check whether int input matches the available choices
-    # kyljan1_2 - sgtriv9_0
-    # Spleetoog1! - PmttwEwztl9~
     if(choice == "1"):
       user, id = login(id)
       if (user != None):
