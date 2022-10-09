@@ -452,9 +452,8 @@ class SysAdmin(User):
       username     = CreateUsername()
       username     = Encrypt(username.lower())
       if (self.CheckUnique(username) == 1):
-        #Mayb add prepare log here?
         indexId = log.SystemCounter(id)
-        # log username was taken
+        # log username
         log.PrepareLog(indexId, f"{self.username}", f"{username} created", "username ", "no")
         id = indexId
         break
@@ -466,7 +465,6 @@ class SysAdmin(User):
 
         print("Taken.")
         continue
-    
     password     = CreatePassword()
     if self.role == "sysadmin":
       role         = verifyInput("(advisor)", "Please enter the role of the user: ").lower()
@@ -476,7 +474,6 @@ class SysAdmin(User):
     lastname     = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter your lastname: ").lower()
     registration = datetime.today().strftime('%d-%m-%Y')
 
-    # TODO: add encryption - DONE
     password     = Encrypt(password)
     role         = Encrypt(role)
     firstname    = Encrypt(firstname)
@@ -498,7 +495,6 @@ class SysAdmin(User):
     # Check if executed.
     if self.dbConn.cur.rowcount > 0:
       print("User added\n")
-
       indexId = log.SystemCounter(id)
       # log user added
       log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {username} added to the system", "no")
@@ -717,7 +713,6 @@ class SysAdmin(User):
       print(genericError)
 
   def CheckUnique(self, data):
-    # TODO: Add check to see if user is unique
     sql = """
       SELECT username FROM users
       WHERE username = ?
