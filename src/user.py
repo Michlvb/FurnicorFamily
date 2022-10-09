@@ -25,7 +25,7 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input first name", "Invalid input: %s recorded as user input" % firstName, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input first name", "Invalid input: %s recorded as user input" % firstName, "no")
             id = indexId
             print("Invalid input")
         else:
@@ -37,13 +37,13 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
             id = indexId
             print("Invalid input")
         elif len(lastName) == 1:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
             id = indexId
             print("Invalid input")
         else:
@@ -55,13 +55,13 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
             id = indexId
             print("Invalid input")
         elif len(streetName) <= 3:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
             id = indexId
             print("Invalid Input")
         else:
@@ -73,7 +73,7 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input house number", "Invalid input: %s recorded as user input" % houseNumber, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input house number", "Invalid input: %s recorded as user input" % houseNumber, "no")
             id = indexId
             print("Invalid Input")
         else:
@@ -85,7 +85,7 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input zip code", "Invalid input: %s recorded as user input" % zipcode, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input zip code", "Invalid input: %s recorded as user input" % zipcode, "no")
             id = indexId
             print("Invalid input")
         else:
@@ -101,7 +101,7 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input email", "Invalid input: %s recorded as user input" % emailAddress, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input email", "Invalid input: %s recorded as user input" % emailAddress, "no")
             id = indexId
             print("Invalid input")
         else:
@@ -114,7 +114,7 @@ class User:
         if not outcomeRe:
             indexId = log.SystemCounter(id)
             # log invalid input
-            log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % mobilePhone, "no")
+            log.PrepareLog(indexId, f"{self.username}", "Invalid input phone number", "Invalid input: %s recorded as user input" % mobilePhone, "no")
             id = indexId
             print("Invalid input")
         else:
@@ -154,19 +154,19 @@ class User:
           if not outcomeRE:
               indexId = log.SystemCounter(id)
               # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
               id = indexId
               print("Invalid member ID")
           elif len(memberModified) != 10:
               indexId = log.SystemCounter(id)
               # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
               id = indexId
               print("Invalid member ID")
           elif int(memberModified)%10 != checkSum:
               indexId = log.SystemCounter(id)
               # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
               id = indexId
               print("Invalid member ID")
           else:
@@ -181,20 +181,20 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input first name", "Invalid input: %s recorded as user input" % modifiedFirstName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input first name", "Invalid input: %s recorded as user input" % modifiedFirstName, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log first name change
-                  log.PrepareLog(indexId, "testname", "Member first name changed", "Member first name changed to: %s" % modifiedFirstName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Member first name changed", "Member first name changed to: %s" % modifiedFirstName, "no")
                   id = indexId
                   print(f"First name of member {memberModified} has been changed to {modifiedFirstName}")
                   break
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input first name", "Invalid input: %s recorded as user input" % modifiedFirstName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input first name", "Invalid input: %s recorded as user input" % modifiedFirstName, "no")
                   id = indexId
                   print("Invalid input")
                   
@@ -206,20 +206,20 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % modifiedLastName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % modifiedLastName, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log first name change
-                  log.PrepareLog(indexId, "testname", "Member last name changed", "Member last name changed to: %s" % modifiedLastName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Member last name changed", "Member last name changed to: %s" % modifiedLastName, "no")
                   id = indexId
                   print(f"Last name of member {memberModified} has been changed to {modifiedLastName}")
                   break
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input last name", "Invalid input: %s recorded as user input" % modifiedLastName, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % modifiedLastName, "no")
                   id = indexId
                   print("Invalid input")
                   
@@ -230,7 +230,7 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input street name", "Invalid input: %s recorded as user input" % modifiedStreet, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input street name", "Invalid input: %s recorded as user input" % modifiedStreet, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
@@ -238,7 +238,7 @@ class User:
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input street name", "Invalid input: %s recorded as user input" % modifiedStreet, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input street name", "Invalid input: %s recorded as user input" % modifiedStreet, "no")
                   id = indexId
                   print("Invalid member ID")
 
@@ -247,7 +247,7 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input house number", "Invalid input: %s recorded as user input" % modifiedNumber, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input house number", "Invalid input: %s recorded as user input" % modifiedNumber, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
@@ -255,7 +255,7 @@ class User:
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input house number", "Invalid input: %s recorded as user input" % modifiedNumber, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input house number", "Invalid input: %s recorded as user input" % modifiedNumber, "no")
                   id = indexId
                   print("Invalid input")
 
@@ -264,14 +264,14 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input zip code", "Invalid input: %s recorded as user input" % modifiedZipcode, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input zip code", "Invalid input: %s recorded as user input" % modifiedZipcode, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
                   address = f"{modifiedStreet} {modifiedNumber} {modifiedZipcode}"
                   indexId = log.SystemCounter(id)
                   # log changed address
-                  log.PrepareLog(indexId, "testname", "Successful change address", "Member address changed to: %s" % address, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Successful change address", "Member address changed to: %s" % address, "no")
                   id = indexId
                   print(f"The address of member {memberModified} has been changed to {address}")
                   break
@@ -283,19 +283,19 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input email", "Invalid input: %s recorded as user input" % modifiedEmail, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input email", "Invalid input: %s recorded as user input" % modifiedEmail, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log email changed
-                  log.PrepareLog(indexId, "testname", "Successful change email", "Member email changed to: %s" % modifiedEmail, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Successful change email", "Member email changed to: %s" % modifiedEmail, "no")
                   id = indexId
                   print(f"The email of member {memberModified} has been changed into {modifiedEmail}")
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input email", "Invalid input: %s recorded as user input" % modifiedEmail, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input email", "Invalid input: %s recorded as user input" % modifiedEmail, "no")
                   id = indexId
                   print("Invalid member ID")
                   
@@ -306,19 +306,19 @@ class User:
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log changed phone number
-                  log.PrepareLog(indexId, "testname", "Successful change phone number", "Member phone number changed to: %s" % modifiedPhone, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Successful change phone number", "Member phone number changed to: %s" % modifiedPhone, "no")
                   id = indexId
                   print(f"The phonenumber of member {memberModified} has been changed into {modifiedPhone}")
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
-                  log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
+                  log.PrepareLog(indexId, f"{self.username}", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
                   id = indexId
                   print("Invalid member ID")   
       
