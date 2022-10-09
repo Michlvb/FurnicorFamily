@@ -30,7 +30,7 @@ def CreateUsername():
   # ClearConsole()
   print(createUsernameMsg)
   while True:
-    username = input("Please enter your new username: ")
+    username = input("Please enter your username: ").lower()
     try:
       if bool(re.search(r"^[a-zA-Z]", username)):
         if bool(re.fullmatch(r"[A-Za-z0-9_'\.]{6,10}", username)):
