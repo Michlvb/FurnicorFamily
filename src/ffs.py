@@ -4,7 +4,7 @@ from Database.database import Database
 from UI import ui
 from Log import log
 from unicodedata import digit
-from regex import regexPhone
+from regex import regexPhone, idGenerate
 from utils import ClearConsole
 from Log.log import Decrypt, Encrypt
 
@@ -26,7 +26,7 @@ def main():
   ClearConsole()
   print("Welcome to the Furnicor Family System\n\nPlease choose one of the following options:\n(Enter the corresponding number)\n")
   user = SuperAdmin()
-  user.ResetPassword(1)
+  user.modifyMember(1)
   exit(1)
   choice = "0"
   # loop for menu choices login and exit
@@ -34,8 +34,8 @@ def main():
     print("[1] to login") 
     print("[2] to exit")
     user_input = input()
-
     # try except to check if user input is int
+    4563725114
     try:
       temp = user_input
       int(temp)
@@ -62,7 +62,7 @@ def main():
       indexId= log.SystemCounter(id)
       # log incorrect user input
       log.PrepareLog(indexId, "testname%i" % indexId, "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
-      id= indexId
+      id = indexId
 
 def decryptUser(data):
     decryptedData = []

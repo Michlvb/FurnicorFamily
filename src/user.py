@@ -122,6 +122,7 @@ class User:
       #Created ID and registration
       uniqueId = idGenerate()
       registration = datetime.today().strftime('%d-%m-%Y')
+      print("unique: ",uniqueId)
 
       sql = """INSERT INTO members VALUES (?, ?, ?, ?, ?, ?, ?)"""
       try:
@@ -141,36 +142,37 @@ class User:
       return id
 
   def modifyMember(self, id):
-      checkSum = 0;
+      checkSum = 0
       x = True
 
       while True:
-          memberModified = input("Please enter the member ID of the person you wish to change information of: ")
-          outcomeRE = regex.regexID(memberModified)
-
-          for i in (range(len(memberModified)-1)):
-              checkSum = (checkSum + int(memberModified[i]))%10
-
-          if not outcomeRE:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          elif len(memberModified) != 10:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          elif int(memberModified)%10 != checkSum:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          else:
-              break
+        memberModified = input("Please enter the member ID of the person you wish to change information of: ")
+        outcomeRE = regex.regexID(memberModified)
+        # 7553932389
+        for i in (range(len(memberModified)-1)):
+            checkSum = checkSum + int(memberModified[i])
+        checkSum %= 10
+        print("check sum: ", checkSum)
+        if not outcomeRE:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+            id = indexId
+            print("Invalid member ID1")
+        elif len(memberModified) != 10:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+            id = indexId
+            print("Invalid member ID2")
+        elif int(memberModified)%10 != checkSum:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+            id = indexId
+            print("Invalid member ID3")
+        else:
+            break
 
       modifyChoice = input("[1] First name\n[2] Last name\n[3] Address\n[4] Email address\n[5] Phone Number\nPress [0] to return to main menu.\nWhat would you like to change:")
       if modifyChoice == "1":
@@ -397,11 +399,8 @@ class User:
       """
     # Still need to check with mail setup correctly
     user = []
-    for res in self.dbConn.cur.execute(sql, data):
-      for value in res:
-        user.append(Decrypt(str(value)))
-    
-    if user == []:
+    res = self.dbConn.cur.execute(sql, data)
+    if res is None:
       print("Member not found.")
       indexId = log.SystemCounter(id)
       # log Search member
@@ -409,9 +408,18 @@ class User:
       id = indexId
 
       return id
-    
-    print(f"User details:\nId: {user[0]}\nFirst name: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
 
+    for row in res:
+      arr = []
+      for i in range(len(row)):
+        if (i == 0):
+          arr.append(str(row[i]))
+        else:
+          arr.append(Decrypt(str(row[i])))
+      user.append(arr)
+
+    for row in user:
+      print(row)
     indexId = log.SystemCounter(id)
     # log Search member
     log.PrepareLog(indexId, f"{self.username}", "Members searched", "/", "no")

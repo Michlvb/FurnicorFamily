@@ -12,8 +12,8 @@ createUsernameMsg = """The username requires the following:
 searchMsg = """Press one or multiple of the following numbers to choose the options to search on (MOOI GeEngelst vriend):
 [0] - To stop adding search options
 [1] - Member ID
-[2] - Firstname
-[3] - Lastname
+[2] - First name
+[3] - Last name
 [4] - Address
 [5] - Email
 [6] - Phone number
@@ -22,8 +22,8 @@ searchMsg = """Press one or multiple of the following numbers to choose the opti
 singleOption = """Press one of the following numbers to update the value
 [1] - Username
 [2] - Role
-[3] - Firstname
-[4] - Lastname
+[3] - First name
+[4] - Last name
 """
 
 cityMsg = """The following cities can be chosen:
