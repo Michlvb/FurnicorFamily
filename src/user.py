@@ -323,7 +323,7 @@ class User:
                   print("Invalid member ID")   
       
       if modifyChoice == "0":
-        return    
+        return id    
 
   def updatePassword(self, id):
     if not (self.role == 'superadmin'):
@@ -338,7 +338,7 @@ class User:
           # log password updated
           log.PrepareLog(indexId, f"{self.username}", "User not found", "", "no")
           id = indexId
-          return
+          return id
         
         sql = '''UPDATE users SET password = ? WHERE username = ? AND password = ?'''
         self.dbConn.cur.execute(sql, (password, Encrypt(self.username), oldPassword[0]))
@@ -348,6 +348,7 @@ class User:
         # log password updated
         log.PrepareLog(indexId, f"{self.username}", f"User: {self.username}'s password updated", "", "no")
         id = indexId
+        return id
       except sqlite3.Error as err:
 
         indexId = log.SystemCounter(id)
@@ -682,6 +683,8 @@ class SysAdmin(User):
     if (exists("Backup.zip") and exists(dst)):
       os.remove(dst)
 
+    return id
+
   def RestoreBackup(self, id):
     backupName = "backup.db"
     standardName = "highlyClassified.db"
@@ -708,16 +711,6 @@ class SysAdmin(User):
     log.PrepareLog(indexId, f"{self.username}", "Backup restored", f"User {self.username} restored the system", "no")
     id = indexId
     return id
-  
-  #Is this relevant?
-  def PrintLog(self):
-    ClearConsole()
-    if (exists("log.txt")):
-      with open("log.txt", "r") as logfile:
-        for line in logfile.readlines():
-          print(line)
-    else:
-      print(genericError)
 
   def CheckUnique(self, data):
     sql = """
