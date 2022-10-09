@@ -74,7 +74,26 @@ def regexPassword():
     password = input("Please enter your password: ")
     try:
       if bool(re.fullmatch(r"[A-Za-z0-9~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]{8,30}", password)):
-        pass
+        flag_lower = False
+        flag_upper = False
+        flag_number = False
+        flag_character = False
+
+        for i in password:
+          if i.isalpha():
+            if i.isupper():
+              flag_upper = True
+            elif i.islower():
+              flag_lower = True
+          if i.isdigit():
+            flag_number = True
+          if bool(re.match(r"['~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]", i)):
+            flag_character = True
+          
+        if flag_lower and flag_upper and flag_number and flag_character:
+          pass
+        else:
+          continue
       else:
         continue
     except ValueError:

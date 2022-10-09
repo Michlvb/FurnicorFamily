@@ -16,7 +16,26 @@ def CreatePassword():
     password = input("Please enter your new password: ")
     try:
       if bool(re.fullmatch(r"[A-Za-z0-9~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]{8,30}", password)):
-        break
+        flag_lower = False
+        flag_upper = False
+        flag_number = False
+        flag_character = False
+
+        for i in password:
+          if i.isalpha():
+            if i.isupper():
+              flag_upper = True
+            elif i.islower():
+              flag_lower = True
+          if i.isdigit():
+            flag_number = True
+          if bool(re.match(r"['~!@#$%&_\-+=`|\\(){}[\]:;'/<>,\.\?/]", i)):
+            flag_character = True
+          
+        if flag_lower and flag_upper and flag_number and flag_character:
+          pass
+        else:
+          continue
       else:
         print(invalidPassword)
         continue
@@ -90,7 +109,7 @@ def chooseCity():
   while True:
     num = input("Enter number of desired city: ")
     try:
-      if bool(re.fullmatch("^([1-9]|1[01])$", num)):
+      if bool(re.fullmatch("^([1-9]|1[0])$", num)):
         num = int(num)
         city += cities[num-1]
         break

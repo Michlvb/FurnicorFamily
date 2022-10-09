@@ -190,7 +190,7 @@ def OptionNavigation(options, user, id):
         # log user choice
         log.PrepareLog(indexId, f"{user.username}", "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        id = user.Reset(id)
+        id = user.RestoreBackup(id)
     
     if (options == "12"):
         indexId = log.SystemCounter(id)

@@ -455,13 +455,13 @@ class SysAdmin(User):
       if (self.CheckUnique(username) == 1):
         indexId = log.SystemCounter(id)
         # log username
-        log.PrepareLog(indexId, f"{self.username}", f"{username} created", "username ", "no")
+        log.PrepareLog(indexId, f"{self.username}", f"{Decrypt(username)} created", "username ", "no")
         id = indexId
         break
       else:
         indexId = log.SystemCounter(id)
         # log username was taken
-        log.PrepareLog(indexId, f"{self.username}", "Add user username taken", f"username {username} was taken", "no")
+        log.PrepareLog(indexId, f"{self.username}", "Add user username taken", f"username {Decrypt(username)} was taken", "no")
         id = indexId
 
         print("Taken.")
@@ -498,7 +498,7 @@ class SysAdmin(User):
       print("User added\n")
       indexId = log.SystemCounter(id)
       # log user added
-      log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {username} added to the system", "no")
+      log.PrepareLog(indexId, f"{self.username}", "New user added", f"Member {Decrypt(username)} added to the system", "no")
       id = indexId
     else:
       print("No rows affected\n")
