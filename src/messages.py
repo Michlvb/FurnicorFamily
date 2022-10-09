@@ -9,7 +9,7 @@ createUsernameMsg = """The username requires the following:
 - Can contain letters (a-z), numbers (0-9), underscores (_), apostrophes('), and periods(.)
 """
 
-searchMsg = """Press one or multiple of the following numbers to choose the options to search on (MOOI GeEngelst vriend):
+searchMsg = """Press one or multiple of the following numbers to choose the options to search on:
 [0] - To stop adding search options
 [1] - Member ID
 [2] - First name

@@ -20,7 +20,7 @@ def regexID(memberID):
     return memberIdRe
 
 def regexName(name):
-    nameRe = re.search("^[-a-zA-Z ,']+$", name)
+    nameRe = re.search("^[-a-zA-Z,']+$", name)
     return nameRe
 
 def regexStreet(streetName):
