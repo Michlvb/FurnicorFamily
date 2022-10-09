@@ -95,7 +95,6 @@ class User:
       # REMOVE PRINTING MEMBER ADDRESS
       city = chooseCity()
       address = f"{streetName} {houseNumber} {zipcode} {city}"
-      print(address)
 
       while True:
         emailAddress = input("What is your email address: ")
@@ -128,7 +127,8 @@ class User:
 
       sql = """INSERT INTO members VALUES (?, ?, ?, ?, ?, ?, ?)"""
       try:
-        self.dbConn.cur.execute(sql, (uniqueId, firstName, lastName, address, emailAddress, mobilePhone, registration))
+        self.dbConn.cur.execute(sql, (uniqueId, firstName, lastName, Encrypt(address), 
+                                      Encrypt(emailAddress), Encrypt(mobilePhone), registration))
         self.dbConn.conn.commit()
 
         indexId = log.SystemCounter(id)
@@ -383,12 +383,14 @@ class User:
     else:
       for i in range(len(options)):
         # Setting Encryption
-        memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
+        if (options[i] == 'address' or options[i] == 'email' or options[i] == 'phone'):
+          memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
+        else:
+          memberInfo[options[i]] = ValidateOptionValue(options[i])
 
     # This should be illegal
     data = tuple(memberInfo.values())
 
-    #TODO: Figure out a way to fix this sql statement
     sql = """
       SELECT * FROM members
       WHERE (Id LIKE '%' || ? || '%')
@@ -398,7 +400,7 @@ class User:
         AND (email LIKE '%' || ? || '%')
         AND (mobilenumber LIKE '%' || ? || '%')
       """
-    
+    #Still need to check with mail setup correctly
     # Execute sql and loop over the result
     for res in self.dbConn.cur.execute(sql, data):
       print(res)
