@@ -140,7 +140,7 @@ class User:
         log.PrepareLog(indexId, "{self.username}", "Add user database error", "/", "yes")
         id = indexId
 
-  def modifyMember(id):
+  def modifyMember(self, id):
       checkSum = 0;
       x = True
 
@@ -451,15 +451,6 @@ class SysAdmin(User):
 
       print(err)
   
-    while True:  
-      user_response = input("Press x to return to main menu: ")
-      # try except to check if user input is int
-      try:
-          if (user_response == 'x'):
-              break
-      except:
-          pass  
-  
   def AddUser(self, id):
     # Clear console
     ClearConsole()
@@ -629,7 +620,7 @@ class SysAdmin(User):
     tempPassword = "test123!"
 
     # # Get username
-    username = Encrypt(CreateUsername())
+    username = Encrypt(regex.regexUsername())
 
     # Get role
     role = verifyInput("(sysadmin|advisor|Sysadmin|Advisor)", "Please enter the role of the user: ").lower()
@@ -659,12 +650,14 @@ class SysAdmin(User):
         # log password changed
         log.PrepareLog(indexId, "{self.username}", "Password changed", "User: {username}'s password was changed", "no")
         id = indexId
+        print("password successfully changed")
 
       else:
         indexId = log.SystemCounter(id)
         # log no password reset
         log.PrepareLog(indexId, "{self.username}", "Password reset failed", "Password of user {username} was not changed", "no")
         id = indexId
+        print("Failed to change password")
     
 
   def LogBackup(self, status, remaining, total):

@@ -227,4 +227,13 @@ def OptionNavigation(options, user, id):
         id = indexId
         user.DeleteUser(id)
     
+    while True:  
+        user_response = input("Press x to return to main menu: ")
+        # try except to check if user input is int
+        try:
+            if (user_response == 'x'):
+                break
+        except:
+            pass  
+
     mainMenu(user, id)
