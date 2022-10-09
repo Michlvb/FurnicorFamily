@@ -132,12 +132,12 @@ class User:
 
         indexId = log.SystemCounter(id)
         # log member add. KYLIAN WHY IS THIS "YES"?
-        log.PrepareLog(indexId, "{self.username}", "Member added to database", "/", "yes")
+        log.PrepareLog(indexId, f"{self.username}", "Member added to database", "/", "yes")
         id = indexId
       except sqlite3.Error as err:
         indexId = log.SystemCounter(id)
         # log database error
-        log.PrepareLog(indexId, "{self.username}", "Add user database error", "/", "yes")
+        log.PrepareLog(indexId, f"{self.username}", "Add user database error", "/", "yes")
         id = indexId
 
   def modifyMember(self, id):
@@ -336,7 +336,7 @@ class User:
         if oldPassword is None:
           indexId = log.SystemCounter(id)
           # log password updated
-          log.PrepareLog(indexId, "{self.username}", "User not found", "", "no")
+          log.PrepareLog(indexId, f"{self.username}", "User not found", "", "no")
           id = indexId
           return
         
@@ -346,20 +346,20 @@ class User:
 
         indexId = log.SystemCounter(id)
         # log password updated
-        log.PrepareLog(indexId, "{self.username}", "User: {self.username}'s password updated", "", "no")
+        log.PrepareLog(indexId, f"{self.username}", f"User: {self.username}'s password updated", "", "no")
         id = indexId
       except sqlite3.Error as err:
 
         indexId = log.SystemCounter(id)
         # log incorrect input update password
-        log.PrepareLog(indexId, "{self.username}", "Incorrect input", "Attempt to change password to {password}", "yes")
+        log.PrepareLog(indexId, f"{self.username}", "Incorrect input", f"Attempt to change password to {password}", "yes")
         id = indexId
 
         print(err)
     else:
       indexId = log.SystemCounter(id)
       # log Super admin tried to change password
-      log.PrepareLog(indexId, "{self.username}", "Incorrect menu choice", "Super Admin attempted to access update password", "no")
+      log.PrepareLog(indexId, f"{self.username}", "Incorrect menu choice", "Super Admin attempted to access update password", "no")
       id = indexId
 
       print(unauthorized)
@@ -405,7 +405,7 @@ class User:
       print("User not found.")
       indexId = log.SystemCounter(id)
       # log Search member
-      log.PrepareLog(indexId, "{self.username}", "Member not found", "/", "no")
+      log.PrepareLog(indexId, f"{self.username}", "Member not found", "/", "no")
       id = indexId
       while True:
         user_response = input("Press x to return to main menu: ")
@@ -421,7 +421,7 @@ class User:
 
     indexId = log.SystemCounter(id)
     # log Search member
-    log.PrepareLog(indexId, "{self.username}", "Members searched", "/", "no")
+    log.PrepareLog(indexId, f"{self.username}", "Members searched", "/", "no")
     id = indexId
 
     while True:  
@@ -515,7 +515,7 @@ class SysAdmin(User):
     except sqlite3.Error as err:
       indexId = log.SystemCounter(id)
       # log database error
-      log.PrepareLog(indexId, "{self.username}", "Add user database error", "/", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Add user database error", "/", "yes")
       id = indexId
       return
 
@@ -607,19 +607,19 @@ class SysAdmin(User):
     except sqlite3.Error as err:
       indexId = log.SystemCounter(id)
       # log incorrect input
-      log.PrepareLog(indexId, "{self.username}", "Delete user failed", "Incorrect input", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Delete user failed", "Incorrect input", "yes")
       id = indexId
     
     # TODO: Add logging under both prints
     if self.dbConn.cur.rowcount > 0:
       indexId = log.SystemCounter(id)
       # log Advisor deleted
-      log.PrepareLog(indexId, "{self.username}", "Advisor deleted", "Advisor: {username} deleted", "no")
+      log.PrepareLog(indexId, f"{self.username}", "Advisor deleted", f"Advisor: {username} deleted", "no")
       id = indexId
     else:
       indexId = log.SystemCounter(id)
       # log no advisor deleted
-      log.PrepareLog(indexId, "{self.username}", "No Advisor deleted", "Username: {username} was not deleted", "no")
+      log.PrepareLog(indexId, f"{self.username}", "No Advisor deleted", f"Username: {username} was not deleted", "no")
       id = indexId
 
     return id
@@ -636,7 +636,7 @@ class SysAdmin(User):
     if self.role == "sysadmin" and role != 'advisor':
       indexId = log.SystemCounter(id)
       # log incorrect password reset
-      log.PrepareLog(indexId, "{self.username}", "Reset password error", "User tried to reset password of {username}", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Reset password error", f"User tried to reset password of {username}", "yes")
       id = indexId
 
       print(unauthorized) #Remove statement for logging
@@ -649,21 +649,21 @@ class SysAdmin(User):
       except sqlite3.Error as err:
         indexId = log.SystemCounter(id)
         # log invalid input
-        log.PrepareLog(indexId, "{self.username}", f"{err}", "/", "yes")
+        log.PrepareLog(indexId, f"{self.username}", f"{err}", "/", "yes")
         id = indexId
       
       # Check if executed.
       if self.dbConn.cur.rowcount > 0:
         indexId = log.SystemCounter(id)
         # log password changed
-        log.PrepareLog(indexId, "{self.username}", "Password changed", "User: {username}'s password was changed", "no")
+        log.PrepareLog(indexId, f"{self.username}", "Password changed", f"User: {username}'s password was changed", "no")
         id = indexId
         print("password successfully changed")
 
       else:
         indexId = log.SystemCounter(id)
         # log no password reset
-        log.PrepareLog(indexId, "{self.username}", "Password reset failed", "Password of user {username} was not changed", "no")
+        log.PrepareLog(indexId, f"{self.username}", "Password reset failed", f"Password of user {username} was not changed", "no")
         id = indexId
         print("Failed to change password")
     
@@ -676,7 +676,7 @@ class SysAdmin(User):
   def BackupDB(self, id):
     # Log
     indexId = log.SystemCounter(id)
-    log.PrepareLog(indexId, "{self.username}", "Backup of system made", "User {self.username} made a backup of the system", "no")
+    log.PrepareLog(indexId, f"{self.username}", "Backup of system made", f"User {self.username} made a backup of the system", "no")
     id = indexId
 
     backupName = "BackUp.db"
@@ -697,7 +697,7 @@ class SysAdmin(User):
   def RestoreBackup(self, id):
     # Log
     indexId = log.SystemCounter(id)
-    log.PrepareLog(indexId, "{self.username}", "Backup restored", "User {self.username} restored the system", "no")
+    log.PrepareLog(indexId, f"{self.username}", "Backup restored", f"User {self.username} restored the system", "no")
     id = indexId
     # Restore files (it overrides the current files)
     backupName = "highlyClassified.db"
