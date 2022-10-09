@@ -92,7 +92,6 @@ class User:
             break
         
       # Another input field to ask the user from which city they are.(at least they can choose from 10 different cities)
-      # REMOVE PRINTING MEMBER ADDRESS
       city = chooseCity()
       address = f"{streetName} {houseNumber} {zipcode} {city}"
 
@@ -127,7 +126,7 @@ class User:
 
       sql = """INSERT INTO members VALUES (?, ?, ?, ?, ?, ?, ?)"""
       try:
-        self.dbConn.cur.execute(sql, (uniqueId, firstName, lastName, Encrypt(address), 
+        self.dbConn.cur.execute(sql, (uniqueId, Encrypt(firstName), Encrypt(lastName), Encrypt(address), 
                                       Encrypt(emailAddress), Encrypt(mobilePhone), registration))
         self.dbConn.conn.commit()
 
@@ -400,10 +399,17 @@ class User:
         AND (email LIKE '%' || ? || '%')
         AND (mobilenumber LIKE '%' || ? || '%')
       """
-    #Still need to check with mail setup correctly
-    # Execute sql and loop over the result
+    # Still need to check with mail setup correctly
+    user = []
     for res in self.dbConn.cur.execute(sql, data):
-      print(res)
+      for value in res:
+        user.append(Decrypt(str(value)))
+
+    if user == []:
+      print("User not found.")
+      return
+    
+    print(f"User details:\nId: {user[0]}\nFirstname: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
 
     indexId = log.SystemCounter(id)
     # log Search member
@@ -418,7 +424,7 @@ class User:
           if (user_response == 'x'):
             break
       except:
-          pass 
+          pass
     
 
 class SysAdmin(User):
