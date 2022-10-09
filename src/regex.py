@@ -2,31 +2,25 @@ import re
 import random
 
 def idGenerate():
-    x = True
     checkSum = 0
-    while x:
-        digits = ""
-        first = random.randint(1,9)
-        digits = digits + str(first)
-        for i in range(9):  
-            rest = random.randrange(0,9)
-            digits = digits + str(rest)
-
-        for q in range(len(digits)-1):
-            checkSum = (checkSum + int(digits[q]))%10
-
-        if int(digits)%10 != checkSum:
-            continue
-        else:
-            break
+    digits = ""
+    first = random.randint(1,9)
+    digits = digits + str(first)
+    for i in range(8):  
+      rest = random.randrange(0,9)
+      digits = digits + str(rest)
+    for i in range(len(digits)):
+      checkSum += int(digits[i])
+    digits += str(checkSum%10)
+    print(digits)
     return digits
 
 def regexID(memberID):
-    memberIdRe = re.search("^[1-9]+$", memberID)
+    memberIdRe = re.search("^[0-9]+$", memberID)
     return memberIdRe
 
 def regexName(name):
-    nameRe = re.search("^[-a-zA-Z ,']+$", name)
+    nameRe = re.search("^[-a-zA-Z,']+$", name)
     return nameRe
 
 def regexStreet(streetName):

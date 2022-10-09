@@ -148,7 +148,7 @@ def OptionNavigation(options, user, id):
         # log user choice
         log.PrepareLog(indexId, "testname%i" % indexId, "Option navigation option chosen", "input: '%s' used as choice" % options, "no")
         id = indexId
-        user.PrintUsers(id)
+        id = user.PrintUsers(id)
 
     if (options == "6"):
         indexId = log.SystemCounter(id)

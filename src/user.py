@@ -141,43 +141,39 @@ class User:
       return id
 
   def modifyMember(self, id):
-      checkSum = 0;
+      checkSum = 0
       x = True
 
       while True:
-          memberModified = input("Please enter the member ID of the person you wish to change information of: ")
-          outcomeRE = regex.regexID(memberModified)
+        memberModified = input("Please enter the member ID of the person you wish to change information of: ")
+        uniqueID = regex.regexID(memberModified)
+        checkSum = memberModified[-1]
+        verifyCheckSum = 0
 
-          for i in (range(len(memberModified)-1)):
-              checkSum = (checkSum + int(memberModified[i]))%10
+        for i in range(len(memberModified) - 1):
+          verifyCheckSum += int(memberModified[i])
 
-          if not outcomeRE:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          elif len(memberModified) != 10:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          elif int(memberModified)%10 != checkSum:
-              indexId = log.SystemCounter(id)
-              # log invalid input
-              log.PrepareLog(indexId, f"{self.username}", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
-              id = indexId
-              print("Invalid member ID")
-          else:
-              break
-
-      modifyChoice = input("[1] First name\n[2] Last name\n[3] Address\n[4] Email address\n[5] Phone Number\nPress [0] to return to main menu.\nWhat would you like to change:")
+        if not uniqueID:
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+            id = indexId
+            print("Invalid member ID")
+        elif (verifyCheckSum%10) != int(checkSum):
+            indexId = log.SystemCounter(id)
+            # log invalid input
+            log.PrepareLog(indexId, "testname", "Invalid input member ID", "Invalid input: %s recorded as user input" % memberModified, "no")
+            id = indexId
+            print("Invalid member ID")
+        else:
+            break
+      #TODO: REMOVE ALL COMMENTS ABOUT USER SUCCESSFULLY CHANGED
+      modifyChoice = input("[1] First name\n[2] Last name\n[3] Address\n[4] Email address\n[5] Phone Number\nPress [0] to return to main menu.\nWhat would you like to change: ")
+      res = ""
       if modifyChoice == "1":
           while True:
               modifiedFirstName = input("Please enter new first name: ")
               outcomeRE = regex.regexName(modifiedFirstName)
-
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
@@ -190,6 +186,8 @@ class User:
                   log.PrepareLog(indexId, f"{self.username}", "Member first name changed", "Member first name changed to: %s" % modifiedFirstName, "no")
                   id = indexId
                   print(f"First name of member {memberModified} has been changed to {modifiedFirstName}")
+                  sql = "UPDATE MEMBERS SET firstname = ? where id = ?"
+                  res = modifiedFirstName
                   break
               else:
                   indexId = log.SystemCounter(id)
@@ -202,7 +200,6 @@ class User:
           while True:
               modifiedLastName = input("Please enter new last name: ")
               outcomeRE = regex.regexName(modifiedLastName)
-
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
@@ -215,6 +212,8 @@ class User:
                   log.PrepareLog(indexId, f"{self.username}", "Member last name changed", "Member last name changed to: %s" % modifiedLastName, "no")
                   id = indexId
                   print(f"Last name of member {memberModified} has been changed to {modifiedLastName}")
+                  sql = "UPDATE members SET Lastname = ? WHERE id = ?"
+                  res = modifiedLastName
                   break
               else:
                   indexId = log.SystemCounter(id)
@@ -222,11 +221,12 @@ class User:
                   log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % modifiedLastName, "no")
                   id = indexId
                   print("Invalid input")
-                  
+      
       if modifyChoice == "3":
-          while x:
+          while True:
               modifiedStreet = input("Please enter new streetname: ")
               outcomeRE = regex.regexStreet(modifiedStreet)
+              res = modifiedStreet
               if not outcomeRE:
                   indexId = log.SystemCounter(id)
                   # log invalid input
@@ -234,14 +234,8 @@ class User:
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
-                  x = False
-              else:
-                  indexId = log.SystemCounter(id)
-                  # log invalid input
-                  log.PrepareLog(indexId, f"{self.username}", "Invalid input street name", "Invalid input: %s recorded as user input" % modifiedStreet, "no")
-                  id = indexId
-                  print("Invalid member ID")
-
+                  break
+          while True:
               modifiedNumber = input("Please enter new house number: ")
               outcomeRE = regex.regexNumber(modifiedNumber)
               if not outcomeRE:
@@ -251,14 +245,9 @@ class User:
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
-                  x = False
-              else:
-                  indexId = log.SystemCounter(id)
-                  # log invalid input
-                  log.PrepareLog(indexId, f"{self.username}", "Invalid input house number", "Invalid input: %s recorded as user input" % modifiedNumber, "no")
-                  id = indexId
-                  print("Invalid input")
-
+                  break
+                  
+          while True:
               modifiedZipcode = input("And please enter the new zipcode: ")
               outcomeRE = regex.regexZipcode(modifiedZipcode)
               if not outcomeRE:
@@ -268,12 +257,13 @@ class User:
                   id = indexId
                   print("Invalid input")
               elif outcomeRE:
-                  address = f"{modifiedStreet} {modifiedNumber} {modifiedZipcode}"
+                  res = f"{modifiedStreet} {modifiedNumber} {modifiedZipcode}"
+                  sql = "UPDATE members SET Address = ? WHERE id = ?"
                   indexId = log.SystemCounter(id)
                   # log changed address
                   log.PrepareLog(indexId, f"{self.username}", "Successful change address", "Member address changed to: %s" % address, "no")
                   id = indexId
-                  print(f"The address of member {memberModified} has been changed to {address}")
+                  print(f"The address of member {memberModified} has been changed to {res}")
                   break
               
       if modifyChoice == "4":
@@ -292,6 +282,9 @@ class User:
                   log.PrepareLog(indexId, f"{self.username}", "Successful change email", "Member email changed to: %s" % modifiedEmail, "no")
                   id = indexId
                   print(f"The email of member {memberModified} has been changed into {modifiedEmail}")
+                  sql = "UPDATE members SET Email = ? WHERE id = ?"
+                  res = modifiedEmail
+                  break
               else:
                   indexId = log.SystemCounter(id)
                   # log invalid input
@@ -300,30 +293,54 @@ class User:
                   print("Invalid member ID")
                   
       if modifyChoice == "5":
-          while True:
-              modifiedPhone = input("Please enter new phonenumber: ")
-              outcomeRE = regex.regexPhone(modifiedPhone)
-              if not outcomeRE:
-                  indexId = log.SystemCounter(id)
-                  # log invalid input
-                  log.PrepareLog(indexId, f"{self.username}", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
-                  id = indexId
-                  print("Invalid input")
-              elif outcomeRE:
-                  indexId = log.SystemCounter(id)
-                  # log changed phone number
-                  log.PrepareLog(indexId, f"{self.username}", "Successful change phone number", "Member phone number changed to: %s" % modifiedPhone, "no")
-                  id = indexId
-                  print(f"The phonenumber of member {memberModified} has been changed into {modifiedPhone}")
-              else:
-                  indexId = log.SystemCounter(id)
-                  # log invalid input
-                  log.PrepareLog(indexId, f"{self.username}", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
-                  id = indexId
-                  print("Invalid member ID")   
+        while True:
+            modifiedPhone = input("Please enter new phonenumber (+31-6-DDDDDDDD): ")
+            outcomeRE = regex.regexPhone(modifiedPhone)
+            res = modifiedPhone
+            if not outcomeRE:
+                indexId = log.SystemCounter(id)
+                # log invalid input
+                log.PrepareLog(indexId, "testname", "Invalid input phone number", "Invalid input: %s recorded as user input" % modifiedPhone, "no")
+                id = indexId
+                print("Invalid input")
+            elif outcomeRE:
+                indexId = log.SystemCounter(id)
+                # log changed phone number
+                log.PrepareLog(indexId, "testname", "Successful change phone number", "Member phone number changed to: %s" % modifiedPhone, "no")
+                id = indexId
+                print(f"The phonenumber of member {memberModified} has been changed into {modifiedPhone}")
+                sql = "UPDATE members SET MobileNumber = ? WHERE id = ?"
+                res = modifiedPhone
+                break 
       
       if modifyChoice == "0":
-        return    
+        return
+
+      try:
+        self.dbConn.cur.execute(sql, (Encrypt(res), memberModified))
+        self.dbConn.conn.commit()
+      except sqlite3.Error as err:
+        print(err)
+        indexId = log.SystemCounter(id)
+        # log database error
+        log.PrepareLog(indexId, f"{err}", "Update user database error", "/", "yes")
+        id = indexId
+        return id
+
+      # Check if executed.
+      if self.dbConn.cur.rowcount > 0:
+        print("User updated\n")
+        indexId = log.SystemCounter(id)
+        # log user added
+        log.PrepareLog(indexId, f"{self.username}", "User updated", "/", "no")
+        id = indexId
+      else:
+        print("No rows affected\n")
+        indexId = log.SystemCounter(id)
+        # log user not added
+        log.PrepareLog(indexId, f"{self.username}", "Updating user failed", "/", "no")
+        id = indexId
+      return id
 
   def updatePassword(self, id):
     if not (self.role == 'superadmin'):
@@ -395,13 +412,11 @@ class User:
         AND (email LIKE '%' || ? || '%')
         AND (mobilenumber LIKE '%' || ? || '%')
       """
+
     # Still need to check with mail setup correctly
     user = []
-    for res in self.dbConn.cur.execute(sql, data):
-      for value in res:
-        user.append(Decrypt(str(value)))
-    
-    if user == []:
+    res = self.dbConn.cur.execute(sql, data)
+    if res is None:
       print("Member not found.")
       indexId = log.SystemCounter(id)
       # log Search member
@@ -409,9 +424,18 @@ class User:
       id = indexId
 
       return id
-    
-    print(f"User details:\nId: {user[0]}\nFirst name: {user[1]}\nLastname: {user[2]}\nAddress: {user[3]}\nEmail: {user[4]}\nMobileNumber: {user[5]}\n")
 
+    for row in res:
+      arr = []
+      for i in range(len(row)):
+        if (i == 0):
+          arr.append(str(row[i]))
+        else:
+          arr.append(Decrypt(str(row[i])))
+      user.append(arr)
+  
+    for row in user:
+      print(row)
     indexId = log.SystemCounter(id)
     # log Search member
     log.PrepareLog(indexId, f"{self.username}", "Members searched", "/", "no")
@@ -669,9 +693,9 @@ class SysAdmin(User):
 
     dst = "backup.db"
 
-    # Create backup
-    with sqlite3.connect(dst) as bck:
-      self.dbConn.conn.backup(bck, pages=-1)
+    bck = sqlite3.connect(dst)
+    self.dbConn.conn.backup(bck, pages=-1)
+    bck.close()
     
     # # Create zip
     with ZipFile("Backup.zip", 'w') as zip:
@@ -681,6 +705,8 @@ class SysAdmin(User):
     # Remove backup file when zip created
     if (exists("Backup.zip") and exists(dst)):
       os.remove(dst)
+    
+    return id
 
   def RestoreBackup(self, id):
     backupName = "backup.db"
@@ -694,30 +720,25 @@ class SysAdmin(User):
       print(zipNotFound)
       return id
 
+    self.dbConn.conn.close()
+
     if (exists(standardName)):
       os.remove(standardName)
 
-    with ZipFile("Backup.zip") as zip:
-      zip.extract("log.txt")
-      zip.extract(backupName)
+    zip = ZipFile("Backup.zip")
+    zip.extract("log.txt")
+    zip.extract(backupName)
+    zip.close()
 
     os.rename(backupName, standardName)
+
+    self.dbConn.conn = sqlite3.connect(standardName)
 
     # Log
     indexId = log.SystemCounter(id)
     log.PrepareLog(indexId, f"{self.username}", "Backup restored", f"User {self.username} restored the system", "no")
     id = indexId
     return id
-  
-  #Is this relevant?
-  def PrintLog(self):
-    ClearConsole()
-    if (exists("log.txt")):
-      with open("log.txt", "r") as logfile:
-        for line in logfile.readlines():
-          print(line)
-    else:
-      print(genericError)
 
   def CheckUnique(self, data):
     sql = """
