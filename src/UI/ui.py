@@ -68,8 +68,6 @@ def mainMenu(user, id):
     ClearConsole()
     menuPrint(user)
     menuNav(user, id)
-    # if(roleParam == "0"):
-    #     exit
     
 # user input to navigate the printed menu
 def menuNav(user, id):
@@ -129,7 +127,6 @@ def OptionNavigation(options, user, id):
             id = user.updatePassword(id)
 
     if (options == "3"):
-        # ModifyMember()
         indexId = log.SystemCounter(id)
         # log user choice
         log.PrepareLog(indexId, f"{user.username}", "Option navigation option chosen", "input: '%s' used as choice" % options, "no")

@@ -39,7 +39,6 @@ def regexEmail(email):
     emailRe = re.search("([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+((\.[A-Z|a-z]{2,})+)", email)
     return emailRe
 
-#TODO: Needs to be changed - Accepts dashes and other stuff (should only accept numbers)
 def regexPhone(phonenumber):
     phoneRe = re.search("(^[0-8]{8}$)", phonenumber)
     return phoneRe

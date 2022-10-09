@@ -10,7 +10,6 @@ def ClearConsole():
 
 
 def CreatePassword():
-  # ClearConsole() #Remove this to the function that calls this function.
   print(updatePasswordMsg)
   while True:
     password = input("Please enter your new password: ")
@@ -46,7 +45,6 @@ def CreatePassword():
   return password
 
 def CreateUsername():
-  # ClearConsole()
   print(createUsernameMsg)
   while True:
     username = input("Please enter your username: ").lower()
@@ -82,7 +80,6 @@ def verifyInput(pattern, msg):
 
 
 def SearchParams():
-  # (member ID, first name, last name, address, email address, phone number and registration date)
   options = ["id", "firstname", "lastname", "address", "email", "phone"]
   res = []
   while True:
@@ -101,7 +98,6 @@ def SearchParams():
       print(err)
   return res
 
-#TODO: ADD LOGGING I THINK?
 def chooseCity():
   print(cityMsg)
   cities = ["Nagpur", "Montreal", "Abuja", "Peshawar", "Curitiba", "Shantou", "Dar es Salaam", "Ho Chi Minh City", "Lima", "Novosibirsk"]
@@ -148,7 +144,6 @@ def ValidateOptionValue(option):
   elif option == "lastname":
     res = verifyInput("^[-a-zA-Z,'\s]+$", "Please enter the last name: ")
     return res
-  #Fix address
   elif option == "address":
     street = verifyInput("^[-a-zA-Z ,.']+$", "Please enter the street name: ")
     houseNum = verifyInput("^[0-9]{0,4}$", "Please enter the house number: ")

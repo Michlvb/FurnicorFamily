@@ -4,11 +4,7 @@ import os
 from os.path import basename, exists
 from utils import ClearConsole
 from messages import unauthorized
-
-# TODO: Create local DB
-# TODO: Fill in user data to local DB
-# # Open a database in read-only mode.
-# "file:template.db?mode=ro"
+from Log import log
 
 class Database:
   def __init__(self):
@@ -22,15 +18,21 @@ class Database:
       self.conn = sqlite3.connect("highlyClassified.db")
       self.cur = self.conn.cursor()
 
-  def getUser(self, data):
+  def getUser(self, data, id):
     try:
       sql = '''SELECT username, role, firstname, lastname FROM users WHERE username = ? AND password = ?'''
       self.cur.execute(sql, (data))
       user = self.cur.fetchone()
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, "DATABASE", "fetched user from db", "/", "no")
+      id = indexId
+      return user, id
     except sqlite3.Error as err:
-      # TODO: Add Logging
       print(err)
-    return user
+      indexId = log.SystemCounter(id)
+      log.PrepareLog(indexId, "DATABASE", str(err), "Error occurred while getting user", "no")
+      id = indexId
+      return id
     
 
   # Close connection

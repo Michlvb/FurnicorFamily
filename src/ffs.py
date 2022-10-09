@@ -31,8 +31,6 @@ def main():
     print("[1] to login") 
     print("[2] to exit")
     user_input = input()
-    # try except to check if user input is int
-    4563725114
     try:
       temp = user_input
       int(temp)
@@ -88,13 +86,12 @@ def login(id):
           return user, id
         else:
           # Get user
-          kweerieResult = db.getUser((Encrypt(usernameTry), Encrypt(passwordTry)))
+          kweerieResult, id = db.getUser((Encrypt(usernameTry), Encrypt(passwordTry)), id)
 
         if (kweerieResult != None):
             user = decryptUser(kweerieResult)
 
             loginAttempt = 0
-            print(user)
 
             indexId = log.SystemCounter(id)
             # log log in successful

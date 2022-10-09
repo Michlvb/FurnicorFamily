@@ -1,4 +1,3 @@
-# TODO: Setup logging functionality
 import logging
 from datetime import datetime
 

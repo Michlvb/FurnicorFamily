@@ -24,7 +24,6 @@ class User:
         outcomeRe = regex.regexName(firstName)
         if not outcomeRe:
             indexId = log.SystemCounter(id)
-            # log invalid input
             log.PrepareLog(indexId, f"{self.username}", "Invalid input first name", "Invalid input: %s recorded as user input" % firstName, "no")
             id = indexId
             print("Invalid input")
@@ -36,13 +35,11 @@ class User:
         outcomeRe = regex.regexName(lastName)
         if not outcomeRe:
             indexId = log.SystemCounter(id)
-            # log invalid input
             log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
             id = indexId
             print("Invalid input")
         elif len(lastName) == 1:
             indexId = log.SystemCounter(id)
-            # log invalid input
             log.PrepareLog(indexId, f"{self.username}", "Invalid input last name", "Invalid input: %s recorded as user input" % lastName, "no")
             id = indexId
             print("Invalid input")
@@ -54,13 +51,11 @@ class User:
         outcomeRe = regex.regexStreet(streetName)
         if not outcomeRe:
             indexId = log.SystemCounter(id)
-            # log invalid input
             log.PrepareLog(indexId, f"{self.username}", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
             id = indexId
             print("Invalid input")
         elif len(streetName) <= 3:
             indexId = log.SystemCounter(id)
-            # log invalid input
             log.PrepareLog(indexId, f"{self.username}", "Invalid input address", "Invalid input: %s recorded as user input" % streetName, "no")
             id = indexId
             print("Invalid Input")
@@ -90,8 +85,7 @@ class User:
             print("Invalid input")
         else:
             break
-        
-      # Another input field to ask the user from which city they are.(at least they can choose from 10 different cities)
+
       city = chooseCity()
       address = f"{streetName} {houseNumber} {zipcode} {city}"
 
@@ -119,7 +113,6 @@ class User:
         else:
             break
 
-      #Created ID and registration
       uniqueId = idGenerate()
       registration = datetime.today().strftime('%d-%m-%Y')
 
@@ -167,7 +160,6 @@ class User:
             print("Invalid member ID")
         else:
             break
-      #TODO: REMOVE ALL COMMENTS ABOUT USER SUCCESSFULLY CHANGED
       modifyChoice = input("[1] First name\n[2] Last name\n[3] Address\n[4] Email address\n[5] Phone Number\nPress [0] to return to main menu.\nWhat would you like to change: ")
       res = ""
       if modifyChoice == "1":
@@ -327,7 +319,6 @@ class User:
         id = indexId
         return id
 
-      # Check if executed.
       if self.dbConn.cur.rowcount > 0:
         print("User updated\n")
         indexId = log.SystemCounter(id)
@@ -346,7 +337,6 @@ class User:
     if not (self.role == 'superadmin'):
       password = Encrypt(CreatePassword())
       try:
-        # Check what happens when password not equal
         self.dbConn.cur.execute('SELECT password FROM users WHERE username = ? AND role = ?', (Encrypt(self.username), Encrypt(self.role)))
         oldPassword = self.dbConn.cur.fetchone()
 
@@ -389,7 +379,6 @@ class User:
     # Get options
     options = SearchParams()
 
-    # Create dict (easy to add the right input from user later)
     memberInfo = {"id": "", "firstname": "", "lastname": "", "address": "", "email": "", "phone": ""}
 
     # Check if options not equal 0. If not, then loop over the options and ask user input
@@ -401,7 +390,6 @@ class User:
         # Setting Encryption
         memberInfo[options[i]] = Encrypt(ValidateOptionValue(options[i]))
 
-    # This should be illegal
     data = tuple(memberInfo.values())
 
     sql = """
@@ -414,7 +402,6 @@ class User:
         AND (mobilenumber LIKE '%' || ? || '%')
       """
 
-    # Still need to check with mail setup correctly
     user = []
     res = self.dbConn.cur.execute(sql, data)
     if res is None:
@@ -657,7 +644,7 @@ class SysAdmin(User):
       log.PrepareLog(indexId, f"{self.username}", "Reset password unauthorized", f"User tried to reset password of {username}", "yes")
       id = indexId
 
-      print(unauthorized) #Remove statement for logging
+      print(unauthorized)
       return id
     else:
       try:
@@ -698,7 +685,7 @@ class SysAdmin(User):
     self.dbConn.conn.backup(bck, pages=-1)
     bck.close()
     
-    # # Create zip
+    # Create zip
     with ZipFile("Backup.zip", 'w') as zip:
       zip.write("log.txt")
       zip.write(dst)
