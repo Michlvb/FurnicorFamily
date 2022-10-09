@@ -448,25 +448,25 @@ class SysAdmin(User):
   
       indexId = log.SystemCounter(id)
       # log print users
-      log.PrepareLog(indexId, "{self.username}", "Print users", "/", "no")
+      log.PrepareLog(indexId, f"{self.username}", "Print users", "/", "no")
       id = indexId
+
+      while True:  
+        user_response = input("Press x to return to main menu: ")
+        # try except to check if user input is int
+        try:
+            if (user_response == 'x'):
+                break
+        except:
+            pass  
 
     except sqlite3.Error as err:
       indexId = log.SystemCounter(id)
       # log invalid input
-      log.PrepareLog(indexId, "{self.username}", "Print users", "Error printing users", "yes")
+      log.PrepareLog(indexId, f"{self.username}", "Print users", "Error printing users", "yes")
       id = indexId
 
       print(err)
-  
-    while True:  
-      user_response = input("Press x to return to main menu: ")
-      # try except to check if user input is int
-      try:
-          if (user_response == 'x'):
-              break
-      except:
-          pass  
   
   def AddUser(self, id):
     # Clear console
