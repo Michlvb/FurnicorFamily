@@ -56,7 +56,7 @@ def main():
       print("incorrect input, please try again")
       indexId= log.SystemCounter(id)
       # log incorrect user input
-      log.PrepareLog(indexId, f"{user.username}", "Main Menu incorrect input", "input: '%s' used as main menu choice" % user_input, "no")
+      log.PrepareLog(indexId, f"Suspicious user", "Main Menu incorrect input", "", "yes")
       id= indexId
 
 def decryptUser(data):
